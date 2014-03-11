@@ -29,6 +29,9 @@ namespace CurlingSimulator
         // Previous Keyboard State
         KeyboardState m_keyboardState;
 
+        // Previous moving state
+        bool m_wasMoving;
+
         // Powerbar
         CPowerBar m_powerBar;
         bool m_moveSlider;
@@ -66,6 +69,7 @@ namespace CurlingSimulator
             m_cameraPositionOffset = new Vector3(0.0f, 50.0f, 100.0f);
             m_cameraPosition = m_cameraPositionOffset;
             m_iceFloorRotation = 1.60f;
+            m_iceFloorPos = new Vector3(16, -3, 0);
             m_stoneRotation = 0.0f;
             m_idCurrentStone = 0;
             m_moveSlider = true;
@@ -83,7 +87,6 @@ namespace CurlingSimulator
             // TODO: use this.Content to load your game content here
 
             m_stones = new CStone[6];
-            m_iceFloorPos = new Vector3(16, -3, 0);
             for (int i = 0; i < 6; ++i)
             {
                 m_stones[i] = new CStone(Content.Load<Model>("Models\\Curlingstein"), 0, 0, 0);
@@ -109,9 +112,27 @@ namespace CurlingSimulator
             m_stoneRotation += (float)gameTime.ElapsedGameTime.TotalMilliseconds *
             MathHelper.ToRadians(0.1f);
 
+            bool somethingMoving = false;
+            for (int i = 0; i < 6; i++)
+            {
+                m_stones[i].setPosition(m_stones[i].getPosition() + new Vector3(0, 0, m_stones[i].getVy()));
+                if (m_stones[i].getVy() != 0 || m_stones[i].getVx() != 0)
+                {
+                    somethingMoving = true;
+                    break;
+                }
+            }
+            if (!somethingMoving && m_wasMoving)
+            {
+                m_powerBar.setZero();
+                m_moveSlider = true;
+            }
+
+            m_wasMoving = somethingMoving;
+
             bool spaceWasDown = m_keyboardState.IsKeyDown(Keys.Space);
             m_keyboardState = Keyboard.GetState();
-            if (spaceWasDown && m_keyboardState.IsKeyUp(Keys.Space))
+            if (spaceWasDown && m_keyboardState.IsKeyUp(Keys.Space) && !somethingMoving)
             {
                 m_idCurrentStone++;
                 if (m_idCurrentStone == 6)
@@ -123,10 +144,15 @@ namespace CurlingSimulator
             for (int i = 0; i < 6; i++)
             {
                 m_stones[i].setPosition(m_stones[i].getPosition() + new Vector3(0, 0, m_stones[i].getVy()));
+                if (m_stones[i].getVy() != 0 || m_stones[i].getVx() != 0)
+                {
+                    m_stones[i].applyResistance();
+                }
             }
 
             if (m_moveSlider)
                 m_powerBar.update();
+
             
             base.Update(gameTime);
         }

@@ -17,6 +17,7 @@ namespace CurlingSimulator
     {
         Vector2 m_pos;
         Vector2 m_sliderPos;
+        Vector2 m_sliderZero;
 
         Vector2 m_increasePower;
 
@@ -32,7 +33,8 @@ namespace CurlingSimulator
             m_texture = texture;
             m_pos = pos;
             float test = m_texture.Height;
-            m_sliderPos = new Vector2(m_pos.X + 2, m_pos.Y + 142);
+            m_sliderZero = new Vector2(m_pos.X + 2, m_pos.Y + 142);
+            m_sliderPos = m_sliderZero;
             m_increasePower = new Vector2(0, -1);
             goUp = true;
             m_max = m_pos.Y - 15;
@@ -68,6 +70,11 @@ namespace CurlingSimulator
 
             if (m_sliderPos.Y >= m_min)
                 goUp = true;
+        }
+
+        public void setZero()
+        {
+            m_sliderPos = m_sliderZero;
         }
     }
 }

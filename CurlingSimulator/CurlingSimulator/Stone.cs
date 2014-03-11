@@ -64,6 +64,11 @@ namespace CurlingSimulator
         {
             return m_model;
         }
+
+        public void applyResistance()
+        {
+            ++m_vY;
+        }
     }
 
 }

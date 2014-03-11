@@ -1,0 +1,7 @@
+CurlingSimulator/CurlingSimulator/bin
+CurlingSimulator/CurlingSimulator/obj
+CurlingSimulator/CurlingSimulator/bin
+CurlingSimulator/CurlingSimulator/Content/bin
+CurlingSimulator/CurlingSimulator/Content/obj
+*.cachefile
+*.user

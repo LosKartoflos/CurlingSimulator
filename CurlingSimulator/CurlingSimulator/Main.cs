@@ -41,6 +41,7 @@ namespace CurlingSimulator
         CStone[] m_stones;
         int m_idCurrentStone;
         float m_stoneRotation;
+        Vector3 m_zeroPosition;
 
         // Floor
         Floor m_iceFloor;
@@ -73,6 +74,7 @@ namespace CurlingSimulator
             m_stoneRotation = 0.0f;
             m_idCurrentStone = 0;
             m_moveSlider = true;
+            m_zeroPosition = new Vector3(0, 0, 0);
             base.Initialize();
         }
 
@@ -107,6 +109,24 @@ namespace CurlingSimulator
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
+
+            bool bNoMoreStones = true;
+            for (int i = 0; i < 6; ++i)
+            {
+                if (m_stones[i].getPosition() == m_zeroPosition || m_stones[i].getVx() != 0 || m_stones[i].getVy() != 0)
+                {
+                    bNoMoreStones = false;
+                    break;
+                }
+            }
+
+            if (bNoMoreStones)
+            {
+                for (int i = 0; i < 6; ++i)
+                {
+                    m_stones[i].setPosition(m_zeroPosition);
+                }
+            }
 
             //Makes the Modelrotating
             m_stoneRotation += (float)gameTime.ElapsedGameTime.TotalMilliseconds *
@@ -153,7 +173,7 @@ namespace CurlingSimulator
             if (m_moveSlider)
                 m_powerBar.update();
 
-            
+
             base.Update(gameTime);
         }
 

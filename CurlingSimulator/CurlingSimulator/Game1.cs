@@ -18,15 +18,15 @@ namespace CurlingSimulator
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
-        public const int SCREENWIDTH = 1024;
-        public const int SCREENHEIGHT = 768; 
+        public const int SCREENWIDTH = 800;
+        public const int SCREENHEIGHT = 600; 
         
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
         Texture2D powerbarText; //image files
 
-        Vector2 powerbarPos = new Vector2(100.0f, 100.0f);
+        Vector2 powerbarPos = new Vector2(55, 530);
 
         float powerbarRot;
 
@@ -138,7 +138,7 @@ namespace CurlingSimulator
 
             // TODO: Add your drawing code here
             spriteBatch.Begin(SpriteBlendMode.AlphaBlend);//start drawing 2D IMages
-            spriteBatch.Draw(powerbarText, powerbarPos, null, Color.White, powerbarRot, powerbarCenter, 1.0f, SpriteEffects.None, 0.0f);
+            spriteBatch.Draw(powerbarText, powerbarPos, null, Color.White, powerbarRot, powerbarCenter, 0.5f, SpriteEffects.None, 0.0f);
             base.Draw(gameTime);
             spriteBatch.End();
 

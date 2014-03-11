@@ -23,3 +23,4 @@ C:\Users\Patrick\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimul
 C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Content\powerbar_slider.xnb
 C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Content\curling_ohne_steine_0.xnb
 C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Content\Models\EisFlaeche.xnb
+C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Content\curling_ohne_steine.xnb

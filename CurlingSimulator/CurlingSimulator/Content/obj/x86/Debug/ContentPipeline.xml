@@ -104,6 +104,15 @@
       <Output>C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Content\curling_ohne_steine_0.xnb</Output>
       <Time>2014-03-11T13:35:36.0610867+01:00</Time>
     </Item>
+    <Item>
+      <Source>curling_ohne_steine.jpg</Source>
+      <Name>curling_ohne_steine</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Content\curling_ohne_steine.xnb</Output>
+      <Time>2014-03-11T16:04:56.2515803+01:00</Time>
+    </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>
       <TargetPlatform>Windows</TargetPlatform>

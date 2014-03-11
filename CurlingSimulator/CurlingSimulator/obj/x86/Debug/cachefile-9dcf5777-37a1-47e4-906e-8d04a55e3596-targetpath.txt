@@ -1,2 +1,0 @@
-Content\powerbar.xnb
-Content\Models\test.xnb

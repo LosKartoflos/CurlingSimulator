@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:Pipeline="Microsoft.Xna.Framework.Content.Pipeline">
+  <Asset Type="Pipeline:BuildItemCollection">
+    <BuildSuccessful>true</BuildSuccessful>
+    <Settings>
+      <TargetPlatform>Windows</TargetPlatform>
+      <BuildConfiguration>Debug</BuildConfiguration>
+      <CompressContent>false</CompressContent>
+      <RootDirectory>C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\Content\</RootDirectory>
+      <LoggerRootDirectory>C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\</LoggerRootDirectory>
+      <IntermediateDirectory>C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\Content\obj\x86\Debug\</IntermediateDirectory>
+      <OutputDirectory>C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Content\</OutputDirectory>
+    </Settings>
+    <Assemblies>
+      <Assembly>
+        <Key>C:\Windows\assembly\GAC_32\Microsoft.Xna.Framework.Content.Pipeline\3.1.0.0__6d5c3888ef60e27d\Microsoft.Xna.Framework.Content.Pipeline.dll</Key>
+        <Value>2013-03-04T14:27:17.1585753+01:00</Value>
+      </Assembly>
+    </Assemblies>
+  </Asset>
+</XnaContent>

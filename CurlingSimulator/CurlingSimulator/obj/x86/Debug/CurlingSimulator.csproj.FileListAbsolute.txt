@@ -1,0 +1,6 @@
+C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\CurlingSimulator.exe
+C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\CurlingSimulator.pdb
+C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\obj\x86\Debug\CurlingSimulator.exe
+C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\obj\x86\Debug\CurlingSimulator.pdb

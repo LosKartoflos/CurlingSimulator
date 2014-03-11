@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurlingSimulator", "CurlingSimulator\CurlingSimulator.csproj", "{8FDC0E08-2BF0-423E-AE42-FCC7DBC67341}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8FDC0E08-2BF0-423E-AE42-FCC7DBC67341}.Debug|x86.ActiveCfg = Debug|x86
+		{8FDC0E08-2BF0-423E-AE42-FCC7DBC67341}.Debug|x86.Build.0 = Debug|x86
+		{8FDC0E08-2BF0-423E-AE42-FCC7DBC67341}.Release|x86.ActiveCfg = Release|x86
+		{8FDC0E08-2BF0-423E-AE42-FCC7DBC67341}.Release|x86.Build.0 = Release|x86
+		{9DCF5777-37A1-47E4-906E-8D04A55E3596}.Debug|x86.ActiveCfg = Debug|x86
+		{9DCF5777-37A1-47E4-906E-8D04A55E3596}.Release|x86.ActiveCfg = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -85,7 +85,7 @@ namespace CurlingSimulator
             // TODO: use this.Content to load your game content here
 
             //Loads the 3D Model
-            myModel = Content.Load<Model>("Models\\test");
+            myModel = Content.Load<Model>("Models\\Curlingstein");
 
             //sets the Aspect Ratio
             aspectRatio = graphics.GraphicsDevice.Viewport.AspectRatio;
@@ -116,6 +116,20 @@ namespace CurlingSimulator
             //Makes the Modelrotating
             modelRotation += (float)gameTime.ElapsedGameTime.TotalMilliseconds *
             MathHelper.ToRadians(0.1f);
+
+            KeyboardState keyboard = Keyboard.GetState();
+
+            // Richtungen
+            Vector3 left = new Vector3(-1, 0, 0);
+            Vector3 right = new Vector3(1, 0, 0);
+            Vector3 forward = new Vector3(0, 0, -1);
+            Vector3 backward = new Vector3(0, 0, 1);
+
+            // Tastatur anwenden
+            if (keyboard.IsKeyDown(Keys.Left)) modelPosition += left;
+            if (keyboard.IsKeyDown(Keys.Right)) modelPosition += right;
+            if (keyboard.IsKeyDown(Keys.Up)) modelPosition += forward;
+            if (keyboard.IsKeyDown(Keys.Down)) modelPosition += backward;
 
             base.Update(gameTime);
         }

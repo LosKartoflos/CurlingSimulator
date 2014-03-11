@@ -3,3 +3,5 @@ Content\powerbar_full.xnb
 Content\Models\test.xnb
 Content\Models\Curlingstein.xnb
 Content\powerbar_slider.xnb
+Content\Models\EisFlaeche.xnb
+Content\curling_ohne_steine_0.xnb

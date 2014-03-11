@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<XnaContent xmlns:Pipeline="Microsoft.Xna.Framework.Content.Pipeline">
+<XnaContent xmlns:Pipeline="Microsoft.Xna.Framework.Content.Pipeline" xmlns:Graphics="Microsoft.Xna.Framework.Graphics" xmlns:Processors="Microsoft.Xna.Framework.Content.Pipeline.Processors">
   <Asset Type="Pipeline:BuildItemCollection">
     <Item>
       <Source>powerbar.png</Source>
@@ -8,7 +8,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Content\powerbar.xnb</Output>
-      <Time>2014-03-11T10:45:46.0786222+01:00</Time>
+      <Time>2014-03-11T14:28:25.8233867+01:00</Time>
     </Item>
     <Item>
       <Source>powerbar_full.png</Source>
@@ -17,7 +17,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Content\powerbar_full.xnb</Output>
-      <Time>2014-03-11T13:31:41.0923783+01:00</Time>
+      <Time>2014-03-11T14:28:25.829387+01:00</Time>
     </Item>
     <Item>
       <Source>Models\test.fbx</Source>
@@ -26,10 +26,10 @@
       <Processor>ModelProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Content\Models\test.xnb</Output>
-      <Time>2014-03-11T11:21:08.6874373+01:00</Time>
+      <Time>2014-03-11T14:28:25.7133804+01:00</Time>
       <Dependency>
         <Key>obj\x86\Debug\Models\test_0.xml</Key>
-        <Value>2014-03-11T15:19:51.1204396+01:00</Value>
+        <Value>2014-03-11T15:54:10.2446308+01:00</Value>
       </Dependency>
     </Item>
     <Item>
@@ -39,10 +39,10 @@
       <Processor>ModelProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Content\Models\Curlingstein.xnb</Output>
-      <Time>2014-03-11T13:21:23.4967535+01:00</Time>
+      <Time>2014-03-11T14:28:25.7073801+01:00</Time>
       <Dependency>
         <Key>obj\x86\Debug\Models\Curlingstein_0.xml</Key>
-        <Value>2014-03-11T15:19:52.3304413+01:00</Value>
+        <Value>2014-03-11T15:54:11.5037028+01:00</Value>
       </Dependency>
     </Item>
     <Item>
@@ -50,14 +50,14 @@
       <Importer>FbxImporter</Importer>
       <Options>IntermediateFile, DontCacheImportedData</Options>
       <Output>obj\x86\Debug\Models\test_0.xml</Output>
-      <Time>2014-03-11T11:21:08.6874373+01:00</Time>
+      <Time>2014-03-11T14:28:25.7133804+01:00</Time>
     </Item>
     <Item>
       <Source>Models\Curlingstein.fbx</Source>
       <Importer>FbxImporter</Importer>
       <Options>IntermediateFile, DontCacheImportedData</Options>
       <Output>obj\x86\Debug\Models\Curlingstein_0.xml</Output>
-      <Time>2014-03-11T13:21:23.4967535+01:00</Time>
+      <Time>2014-03-11T14:28:25.7073801+01:00</Time>
     </Item>
     <Item>
       <Source>powerbar_slider.png</Source>
@@ -66,7 +66,43 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Content\powerbar_slider.xnb</Output>
-      <Time>2014-03-11T15:20:51.8005246+01:00</Time>
+      <Time>2014-03-11T15:50:27.4978904+01:00</Time>
+    </Item>
+    <Item>
+      <Source>Models\EisFlaeche.fbx</Source>
+      <Name>Models\EisFlaeche</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Content\Models\EisFlaeche.xnb</Output>
+      <Time>2014-03-11T15:50:41.1246698+01:00</Time>
+      <Dependency>
+        <Key>obj\x86\Debug\Models\EisFlaeche_0.xml</Key>
+        <Value>2014-03-11T15:56:10.9325337+01:00</Value>
+      </Dependency>
+      <Request>C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Content\curling_ohne_steine_0.xnb</Request>
+    </Item>
+    <Item>
+      <Source>Models\EisFlaeche.fbx</Source>
+      <Importer>FbxImporter</Importer>
+      <Options>IntermediateFile, DontCacheImportedData</Options>
+      <Output>obj\x86\Debug\Models\EisFlaeche_0.xml</Output>
+      <Time>2014-03-11T15:50:41.1246698+01:00</Time>
+    </Item>
+    <Item>
+      <Source>C:\Users\stud\Downloads\curling_ohne_steine.jpg</Source>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Parameters>
+        <Data Key="ColorKeyColor" Type="Graphics:Color">FFFF00FF</Data>
+        <Data Key="ColorKeyEnabled" Type="bool">true</Data>
+        <Data Key="TextureFormat" Type="Processors:TextureProcessorOutputFormat">DxtCompressed</Data>
+        <Data Key="GenerateMipmaps" Type="bool">true</Data>
+        <Data Key="ResizeToPowerOfTwo" Type="bool">false</Data>
+      </Parameters>
+      <Options>None</Options>
+      <Output>C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Content\curling_ohne_steine_0.xnb</Output>
+      <Time>2014-03-11T13:35:36.0610867+01:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>

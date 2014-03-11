@@ -1,3 +1,4 @@
 Content\powerbar.xnb
 Content\Models\test.xnb
 Content\Models\Curlingstein.xnb
+Content\powerbar_full.xnb

@@ -26,7 +26,7 @@ namespace CurlingSimulator
 
         Texture2D powerbarText; //image files
 
-        Vector2 powerbarPos = new Vector2(55, 530);
+        Vector2 powerbarPos = new Vector2(50, 480);
 
         float powerbarRot;
 
@@ -75,7 +75,7 @@ namespace CurlingSimulator
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            powerbarText = Content.Load<Texture2D>("powerbar");
+            powerbarText = Content.Load<Texture2D>("powerbar_full");
 
             powerbarHeight = powerbarText.Height;
             powerbarWidth = powerbarText.Width;
@@ -158,7 +158,7 @@ namespace CurlingSimulator
 
             // TODO: Add your drawing code here
             spriteBatch.Begin(SpriteBlendMode.AlphaBlend);//start drawing 2D IMages
-            spriteBatch.Draw(powerbarText, powerbarPos, null, Color.White, powerbarRot, powerbarCenter, 0.5f, SpriteEffects.None, 0.0f);
+            spriteBatch.Draw(powerbarText, powerbarPos, null, Color.White, powerbarRot, powerbarCenter, 0.05f, SpriteEffects.None, 0.0f);
             base.Draw(gameTime);
             spriteBatch.End();
 

@@ -72,6 +72,7 @@ namespace CurlingSimulator
         // Set the 3D model to draw.
         CStone[] m_stones;
         int idCurrentStone = 0;
+        Floor iceFloor;
 
         // Sets the Aspect Ratio (scales the 3D to 2D projection 
         float aspectRatio;
@@ -93,10 +94,12 @@ namespace CurlingSimulator
 
             //Loads the 3D Model
             m_stones = new CStone[6];
+            floorPosition = new Vector3(16, -3, 0);
             for (int i = 0; i < 6; ++i)
             {
                 m_stones[i] = new CStone(Content.Load<Model>("Models\\Curlingstein"), 0, 0, 0);
             }
+                iceFloor = new Floor(Content.Load<Model>("Models\\EisFlaeche"), 0, 0, 0);
 
             //sets the Aspect Ratio
             aspectRatio = graphics.GraphicsDevice.Viewport.AspectRatio;
@@ -177,6 +180,10 @@ namespace CurlingSimulator
         // Set the position of the model and set the rotation.
         float modelRotation = 0.0f;
 
+        // Set the position of the Floor
+        Vector3 floorPosition;
+        float floorRotation = 1.60f;
+
         // Set the position of the camera 
         Vector3 cameraPosition = new Vector3(0.0f, 50.0f, 100.0f);
         protected override void Draw(GameTime gameTime)
@@ -192,6 +199,7 @@ namespace CurlingSimulator
 
             DrawStone();
 
+            DrawFloor();
 
             base.Draw(gameTime);
         }
@@ -224,6 +232,38 @@ namespace CurlingSimulator
                     // Draw the mesh, using the effects set above.
                     mesh.Draw();
                 }
+            }
+        }
+
+        private void DrawFloor()
+        {
+
+            // Copy any parent transforms.
+            Matrix[] transforms = new Matrix[iceFloor.getModel().Bones.Count];
+            iceFloor.getModel().CopyAbsoluteBoneTransformsTo(transforms);
+
+            // Draw the model. A model can have multiple meshes, so loop.
+            foreach (ModelMesh mesh in iceFloor.getModel().Meshes)
+            {
+                // This is where the mesh orientation is set, as well 
+                // as our camera and projection.
+                foreach (BasicEffect effect in mesh.Effects)
+                {
+                    effect.EnableDefaultLighting();
+                    effect.DirectionalLight0.DiffuseColor = new Vector3(3.0f, 3.0f, 3.0f); // a red light
+                    effect.DirectionalLight0.SpecularColor = new Vector3(0, 1, 0);
+                    effect.World = transforms[mesh.ParentBone.Index] *
+                        Matrix.CreateRotationY(floorRotation)
+                        * Matrix.CreateTranslation(floorPosition);
+                    effect.View = Matrix.CreateLookAt(cameraPosition,
+                        Vector3.Zero, Vector3.Up);
+                    effect.Projection = Matrix.CreatePerspectiveFieldOfView(
+                        MathHelper.ToRadians(45.0f), aspectRatio,
+                        1.0f, 10000.0f);
+                }
+                // Draw the mesh, using the effects set above.
+                mesh.Draw();
+     
             }
         }
     }

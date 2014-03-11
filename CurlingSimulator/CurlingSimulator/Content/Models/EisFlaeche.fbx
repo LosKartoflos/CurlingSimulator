@@ -1672,7 +1672,7 @@ Objects:  {
 		}
 		UseMipMap: 0
 		Filename: "curling_ohne_steine.jpg"
-		RelativeFilename: "C:\Users\stud\Downloads\curling_ohne_steine.jpg"
+		RelativeFilename: "..\curling_ohne_steine.jpg"
 	}
 	Texture: "Texture::curling_ohne_steine_jpg", "TextureVideoClip" {
 		Type: "TextureVideoClip"
@@ -1697,7 +1697,7 @@ Objects:  {
 		}
 		Media: "Video::curling_ohne_steine_jpg"
 		FileName: "curling_ohne_steine.jpg"
-		RelativeFilename: "C:\Users\stud\Downloads\curling_ohne_steine.jpg"
+		RelativeFilename: "..\curling_ohne_steine.jpg"
 		ModelUVTranslation: 0,0
 		ModelUVScaling: 1,1
 		Texture_Alpha_Source: "None"

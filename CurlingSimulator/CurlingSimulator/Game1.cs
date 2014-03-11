@@ -77,6 +77,11 @@ namespace CurlingSimulator
 
             powerbarText = Content.Load<Texture2D>("powerbar");
 
+            powerbarHeight = powerbarText.Height;
+            powerbarWidth = powerbarText.Width;
+
+            powerbarCenter = new Vector2(powerbarWidth / 2, powerbarHeight / 2);
+
             // TODO: use this.Content to load your game content here
 
             //Loads the 3D Model
@@ -101,12 +106,7 @@ namespace CurlingSimulator
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
-        {
-            powerbarHeight = powerbarText.Height;
-            powerbarWidth = powerbarText.Width;
-
-            powerbarCenter = new Vector2(powerbarWidth / 2, powerbarHeight / 2);
-            
+        {   
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();

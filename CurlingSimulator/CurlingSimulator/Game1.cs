@@ -34,6 +34,13 @@ namespace CurlingSimulator
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+            powerbarText = Content.Load<Texture2D>("Assets\\Images\\powerbar");
+
+            powerbarHeight = powerbarText.Height;
+            powerbarWidth = powerbarText.Width;
+
+            powerbarCenter = new Vector2(powerbarWidth / 2, powerbarHeight / 2);
         }
 
         /// <summary>

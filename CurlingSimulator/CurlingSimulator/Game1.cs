@@ -18,6 +18,9 @@ namespace CurlingSimulator
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
+        public const int SCREENWIDTH = 1024;
+        public const int SCREENHEIGHT = 768; 
+        
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
@@ -33,6 +36,10 @@ namespace CurlingSimulator
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+
+            graphics.PreferredBackBufferHeight = SCREENHEIGHT;
+            graphics.PreferredBackBufferWidth = SCREENWIDTH;
+
             Content.RootDirectory = "Content";
 
         }

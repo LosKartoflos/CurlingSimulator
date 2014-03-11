@@ -24,3 +24,7 @@ C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulato
 C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Content\curling_ohne_steine_0.xnb
 C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Content\Models\EisFlaeche.xnb
 C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Content\curling_ohne_steine.xnb
+C:\Users\Patrick\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Content\curling_ohne_steine.xnb
+C:\Users\Patrick\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Content\curling_ohne_steine_0.xnb
+C:\Users\Patrick\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Content\Models\EisFlaeche.xnb
+C:\Users\Patrick\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Content\powerbar_slider.xnb

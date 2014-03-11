@@ -1,8 +1,8 @@
 Content\powerbar.xnb
 Content\powerbar_full.xnb
+Content\powerbar_slider.xnb
+Content\curling_ohne_steine.xnb
 Content\Models\test.xnb
 Content\Models\Curlingstein.xnb
-Content\powerbar_slider.xnb
 Content\Models\EisFlaeche.xnb
 Content\curling_ohne_steine_0.xnb
-Content\curling_ohne_steine.xnb

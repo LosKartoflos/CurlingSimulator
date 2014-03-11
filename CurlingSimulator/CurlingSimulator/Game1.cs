@@ -31,12 +31,15 @@ namespace CurlingSimulator
         Vector2 powerbarSliderPos;
 
         int ausschlag = 558;
+        float staerke;
         bool moveSlider = true;
 
         float powerbarRot;
 
         Vector2 powerbarCenter;
         int powerbarHeight, powerbarWidth;
+
+        KeyboardState m_keyboardState;
 
         public Game1()
         {
@@ -59,7 +62,7 @@ namespace CurlingSimulator
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            m_keyboardState = Keyboard.GetState();
             base.Initialize();
         }
 
@@ -131,8 +134,6 @@ namespace CurlingSimulator
             modelRotation += (float)gameTime.ElapsedGameTime.TotalMilliseconds *
             MathHelper.ToRadians(0.1f);
 
-            KeyboardState keyboard = Keyboard.GetState();
-
             // Richtungen
             Vector3 left = new Vector3(-1, 0, 0);
             Vector3 right = new Vector3(1, 0, 0);
@@ -140,27 +141,27 @@ namespace CurlingSimulator
             Vector3 backward = new Vector3(0, 0, 1);
 
             // Tastatur anwenden
-            if (keyboard.IsKeyDown(Keys.Left)) m_stones[idCurrentStone].setPosition(m_stones[idCurrentStone].getPosition() + left);
-            if (keyboard.IsKeyDown(Keys.Right)) m_stones[idCurrentStone].setPosition(m_stones[idCurrentStone].getPosition() + right);
-            if (keyboard.IsKeyDown(Keys.Up)) m_stones[idCurrentStone].setPosition(m_stones[idCurrentStone].getPosition() + forward);
-            if (keyboard.IsKeyDown(Keys.Down)) m_stones[idCurrentStone].setPosition(m_stones[idCurrentStone].getPosition() + backward);
+            if (m_keyboardState.IsKeyDown(Keys.Left)) m_stones[idCurrentStone].setPosition(m_stones[idCurrentStone].getPosition() + left);
+            if (m_keyboardState.IsKeyDown(Keys.Right)) m_stones[idCurrentStone].setPosition(m_stones[idCurrentStone].getPosition() + right);
+            if (m_keyboardState.IsKeyDown(Keys.Up)) m_stones[idCurrentStone].setPosition(m_stones[idCurrentStone].getPosition() + forward);
+            if (m_keyboardState.IsKeyDown(Keys.Down)) m_stones[idCurrentStone].setPosition(m_stones[idCurrentStone].getPosition() + backward);
 
-            if (keyboard.IsKeyDown(Keys.Space))
+            bool spaceWasDown = m_keyboardState.IsKeyDown(Keys.Space);
+            m_keyboardState = Keyboard.GetState();
+            if (spaceWasDown && m_keyboardState.IsKeyUp(Keys.Space))
             {
                 m_stones[idCurrentStone].setVy(-1);
                 idCurrentStone++;
                 if (idCurrentStone == 6)
                     idCurrentStone = 0;
+                    staerke = (558 - ausschlag) / 100;
+                    moveSlider = false;
             }
             for (int i = 0; i < 6; i++)
             {
                 m_stones[i].setPosition(m_stones[i].getPosition() + new Vector3(0, 0, m_stones[i].getVy()));
             }
 
-            //Powerbar ausschlag
-            if (keyboard.IsKeyDown(Keys.M))
-                moveSlider = false;
-            
             if(moveSlider)
                 ausschlag -= 3;
                 if (ausschlag < 400)

@@ -3,7 +3,7 @@
   <Asset Type="Graphics:NodeContent">
     <Name>RootNode</Name>
     <Identity>
-      <SourceFilename>C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\Content\Models\EisFlaeche.fbx</SourceFilename>
+      <SourceFilename>C:\Users\Patrick\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\Content\Models\EisFlaeche.fbx</SourceFilename>
       <SourceTool>FbxImporter</SourceTool>
     </Identity>
     <Transform>1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</Transform>
@@ -54,7 +54,7 @@
     <Resource ID="#Resource1" Type="Graphics:BasicMaterialContent">
       <Name>ICE__curling_ohne_steine_jpg</Name>
       <Identity>
-        <SourceFilename>C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\Content\Models\EisFlaeche.fbx</SourceFilename>
+        <SourceFilename>C:\Users\Patrick\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\Content\Models\EisFlaeche.fbx</SourceFilename>
         <SourceTool>FbxImporter</SourceTool>
       </Identity>
       <OpaqueData>
@@ -74,6 +74,6 @@
     </Resource>
   </Resources>
   <ExternalReferences>
-    <ExternalReference ID="#External1" TargetType="Graphics:TextureContent">..\..\..\..\..\..\..\..\..\..\Downloads\curling_ohne_steine.jpg</ExternalReference>
+    <ExternalReference ID="#External1" TargetType="Graphics:TextureContent">..\..\..\..\curling_ohne_steine.jpg</ExternalReference>
   </ExternalReferences>
 </XnaContent>

@@ -8,7 +8,27 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Content\powerbar.xnb</Output>
-      <Time>2014-03-11T10:45:46.0786222+01:00</Time>
+      <Time>2014-03-11T10:58:43.5477217+01:00</Time>
+    </Item>
+    <Item>
+      <Source>Models\test.fbx</Source>
+      <Name>Models\test</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Content\Models\test.xnb</Output>
+      <Time>2014-03-11T11:03:19.2484909+01:00</Time>
+      <Dependency>
+        <Key>obj\x86\Debug\Models\test_0.xml</Key>
+        <Value>2014-03-11T11:13:15.4285904+01:00</Value>
+      </Dependency>
+    </Item>
+    <Item>
+      <Source>Models\test.fbx</Source>
+      <Importer>FbxImporter</Importer>
+      <Options>IntermediateFile, DontCacheImportedData</Options>
+      <Output>obj\x86\Debug\Models\test_0.xml</Output>
+      <Time>2014-03-11T11:03:19.2484909+01:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>

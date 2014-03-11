@@ -6,3 +6,4 @@ C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulato
 C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\obj\x86\Debug\CurlingSimulator.pdb
 C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Assets\Images\powerbar.png
 C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Content\powerbar.xnb
+C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Content\Models\test.xnb

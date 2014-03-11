@@ -1,2 +1,0 @@
-C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\Content\obj\x86\Debug\ResolveAssemblyReference.cache
-C:\Users\Patrick\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\Content\obj\x86\Debug\ResolveAssemblyReference.cache

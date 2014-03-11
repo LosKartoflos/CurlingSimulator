@@ -35,10 +35,6 @@ namespace CurlingSimulator
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            powerbarHeight = powerbarText.Height;
-            powerbarWidth = powerbarText.Width;
-
-            powerbarCenter = new Vector2(powerbarWidth / 2, powerbarHeight / 2);
         }
 
         /// <summary>
@@ -63,7 +59,7 @@ namespace CurlingSimulator
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            powerbarText = Content.Load<Texture2D>("Assets\\Images\\powerbar");
+            powerbarText = Content.Load<Texture2D>("powerbar");
 
             // TODO: use this.Content to load your game content here
         }
@@ -84,6 +80,11 @@ namespace CurlingSimulator
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            powerbarHeight = powerbarText.Height;
+            powerbarWidth = powerbarText.Width;
+
+            powerbarCenter = new Vector2(powerbarWidth / 2, powerbarHeight / 2);
+            
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();

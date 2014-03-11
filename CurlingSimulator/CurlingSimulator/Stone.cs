@@ -49,10 +49,10 @@ namespace CurlingSimulator
             return m_vY;
         }
 
-        public void setPosition(int x, int y)
+        public void setPosition(Vector3 position)
         {
-            m_position.X = x;
-            m_position.Y = y;
+            m_position.X = position.X;
+            m_position.Z = position.Z;
         }
 
         public Vector3 getPosition()

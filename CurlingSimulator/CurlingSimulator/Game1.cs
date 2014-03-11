@@ -66,6 +66,7 @@ namespace CurlingSimulator
 
         // Set the 3D model to draw.
         CStone[] m_stones;
+        int idCurrentStone = 0;
 
         // Sets the Aspect Ratio (scales the 3D to 2D projection 
         float aspectRatio;
@@ -86,11 +87,9 @@ namespace CurlingSimulator
 
             //Loads the 3D Model
             m_stones = new CStone[6];
-            modelPosition = new Vector3[6];
             for (int i = 0; i < 6; ++i)
             {
                 m_stones[i] = new CStone(Content.Load<Model>("Models\\Curlingstein"), 0, 0, 0);
-                modelPosition[i] = Vector3.Zero;
             }
 
             //sets the Aspect Ratio
@@ -132,10 +131,22 @@ namespace CurlingSimulator
             Vector3 backward = new Vector3(0, 0, 1);
 
             // Tastatur anwenden
-            if (keyboard.IsKeyDown(Keys.Left)) modelPosition[0] += left;
-            if (keyboard.IsKeyDown(Keys.Right)) modelPosition[0] += right;
-            if (keyboard.IsKeyDown(Keys.Up)) modelPosition[0] += forward;
-            if (keyboard.IsKeyDown(Keys.Down)) modelPosition[0] += backward;
+            if (keyboard.IsKeyDown(Keys.Left)) m_stones[idCurrentStone].setPosition(m_stones[idCurrentStone].getPosition() + left);
+            if (keyboard.IsKeyDown(Keys.Right)) m_stones[idCurrentStone].setPosition(m_stones[idCurrentStone].getPosition() + right);
+            if (keyboard.IsKeyDown(Keys.Up)) m_stones[idCurrentStone].setPosition(m_stones[idCurrentStone].getPosition() + forward);
+            if (keyboard.IsKeyDown(Keys.Down)) m_stones[idCurrentStone].setPosition(m_stones[idCurrentStone].getPosition() + backward);
+
+            if (keyboard.IsKeyDown(Keys.Space))
+            {
+                m_stones[idCurrentStone].setVy(-1);
+                idCurrentStone++;
+                if (idCurrentStone == 6)
+                    idCurrentStone = 0;
+            }
+            for (int i = 0; i < 6; i++)
+            {
+                m_stones[i].setPosition(m_stones[i].getPosition() + new Vector3(0, 0, m_stones[i].getVy()));
+            }
 
             base.Update(gameTime);
         }
@@ -147,14 +158,13 @@ namespace CurlingSimulator
         /// 
 
         // Set the position of the model and set the rotation.
-        Vector3[] modelPosition;
         float modelRotation = 0.0f;
 
         // Set the position of the camera 
         Vector3 cameraPosition = new Vector3(0.0f, 50.0f, 100.0f);
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.White);
 
             // TODO: Add your drawing code here
             spriteBatch.Begin(SpriteBlendMode.AlphaBlend);//start drawing 2D IMages
@@ -186,7 +196,7 @@ namespace CurlingSimulator
                         effect.EnableDefaultLighting();
                         effect.World = transforms[mesh.ParentBone.Index] *
                             Matrix.CreateRotationY(modelRotation)
-                            * Matrix.CreateTranslation(modelPosition[i]);
+                            * Matrix.CreateTranslation(m_stones[i].getPosition());
                         effect.View = Matrix.CreateLookAt(cameraPosition,
                             Vector3.Zero, Vector3.Up);
                         effect.Projection = Matrix.CreatePerspectiveFieldOfView(

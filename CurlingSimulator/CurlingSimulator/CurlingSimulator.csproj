@@ -84,9 +84,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Floor.cs" />
+    <Compile Include="Powerbar.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Game1.cs" />
+    <Compile Include="Main.cs" />
     <Compile Include="Stone.cs" />
   </ItemGroup>
   <ItemGroup>

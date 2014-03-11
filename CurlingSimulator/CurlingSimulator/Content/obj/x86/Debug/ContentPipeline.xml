@@ -7,8 +7,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Content\powerbar.xnb</Output>
-      <Time>2014-03-11T12:50:55.2887553+01:00</Time>
+      <Output>C:\Users\Patrick\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Content\powerbar.xnb</Output>
+      <Time>2014-03-11T12:54:12.7324246+01:00</Time>
     </Item>
     <Item>
       <Source>Models\test.fbx</Source>
@@ -16,19 +16,12 @@
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Content\Models\test.xnb</Output>
-      <Time>2014-03-11T12:50:55.2767546+01:00</Time>
+      <Output>C:\Users\Patrick\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Content\Models\test.xnb</Output>
+      <Time>2014-03-11T12:54:12.7224246+01:00</Time>
       <Dependency>
         <Key>obj\x86\Debug\Models\test_0.xml</Key>
-        <Value>2014-03-11T12:51:39.2882719+01:00</Value>
+        <Value>2014-03-11T13:35:29.0974952+01:00</Value>
       </Dependency>
-    </Item>
-    <Item>
-      <Source>Models\test.fbx</Source>
-      <Importer>FbxImporter</Importer>
-      <Options>IntermediateFile, DontCacheImportedData</Options>
-      <Output>obj\x86\Debug\Models\test_0.xml</Output>
-      <Time>2014-03-11T12:50:55.2767546+01:00</Time>
     </Item>
     <Item>
       <Source>Models\Curlingstein.fbx</Source>
@@ -36,29 +29,36 @@
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Content\Models\Curlingstein.xnb</Output>
-      <Time>2014-03-11T12:54:47.3570288+01:00</Time>
+      <Output>C:\Users\Patrick\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Content\Models\Curlingstein.xnb</Output>
+      <Time>2014-03-11T13:02:08.3011069+01:00</Time>
       <Dependency>
         <Key>obj\x86\Debug\Models\Curlingstein_0.xml</Key>
-        <Value>2014-03-11T12:58:58.0693687+01:00</Value>
+        <Value>2014-03-11T13:35:30.3142973+01:00</Value>
       </Dependency>
+    </Item>
+    <Item>
+      <Source>Models\test.fbx</Source>
+      <Importer>FbxImporter</Importer>
+      <Options>IntermediateFile, DontCacheImportedData</Options>
+      <Output>obj\x86\Debug\Models\test_0.xml</Output>
+      <Time>2014-03-11T12:54:12.7224246+01:00</Time>
     </Item>
     <Item>
       <Source>Models\Curlingstein.fbx</Source>
       <Importer>FbxImporter</Importer>
       <Options>IntermediateFile, DontCacheImportedData</Options>
       <Output>obj\x86\Debug\Models\Curlingstein_0.xml</Output>
-      <Time>2014-03-11T12:54:47.3570288+01:00</Time>
+      <Time>2014-03-11T13:02:08.3011069+01:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>
       <TargetPlatform>Windows</TargetPlatform>
       <BuildConfiguration>Debug</BuildConfiguration>
       <CompressContent>false</CompressContent>
-      <RootDirectory>C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\Content\</RootDirectory>
-      <LoggerRootDirectory>C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\</LoggerRootDirectory>
-      <IntermediateDirectory>C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\Content\obj\x86\Debug\</IntermediateDirectory>
-      <OutputDirectory>C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Content\</OutputDirectory>
+      <RootDirectory>C:\Users\Patrick\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\Content\</RootDirectory>
+      <LoggerRootDirectory>C:\Users\Patrick\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\</LoggerRootDirectory>
+      <IntermediateDirectory>C:\Users\Patrick\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\Content\obj\x86\Debug\</IntermediateDirectory>
+      <OutputDirectory>C:\Users\Patrick\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Content\</OutputDirectory>
     </Settings>
     <Assemblies>
       <Assembly>
@@ -87,7 +87,7 @@
       </Assembly>
       <Assembly>
         <Key>C:\Windows\assembly\GAC_32\Microsoft.Xna.Framework.Content.Pipeline\3.1.0.0__6d5c3888ef60e27d\Microsoft.Xna.Framework.Content.Pipeline.dll</Key>
-        <Value>2013-03-04T14:27:17.1585753+01:00</Value>
+        <Value>2014-03-10T16:28:53.4187249+01:00</Value>
       </Assembly>
     </Assemblies>
   </Asset>

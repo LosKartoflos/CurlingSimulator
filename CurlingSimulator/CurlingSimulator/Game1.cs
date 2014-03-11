@@ -65,7 +65,7 @@ namespace CurlingSimulator
         /// 
 
         // Set the 3D model to draw.
-        Model myModel;
+        CStone[] m_stones;
 
         // Sets the Aspect Ratio (scales the 3D to 2D projection 
         float aspectRatio;
@@ -85,7 +85,13 @@ namespace CurlingSimulator
             // TODO: use this.Content to load your game content here
 
             //Loads the 3D Model
-            myModel = Content.Load<Model>("Models\\Curlingstein");
+            m_stones = new CStone[6];
+            modelPosition = new Vector3[6];
+            for (int i = 0; i < 6; ++i)
+            {
+                m_stones[i] = new CStone(Content.Load<Model>("Models\\Curlingstein"), 0, 0, 0);
+                modelPosition[i] = Vector3.Zero;
+            }
 
             //sets the Aspect Ratio
             aspectRatio = graphics.GraphicsDevice.Viewport.AspectRatio;
@@ -126,10 +132,10 @@ namespace CurlingSimulator
             Vector3 backward = new Vector3(0, 0, 1);
 
             // Tastatur anwenden
-            if (keyboard.IsKeyDown(Keys.Left)) modelPosition += left;
-            if (keyboard.IsKeyDown(Keys.Right)) modelPosition += right;
-            if (keyboard.IsKeyDown(Keys.Up)) modelPosition += forward;
-            if (keyboard.IsKeyDown(Keys.Down)) modelPosition += backward;
+            if (keyboard.IsKeyDown(Keys.Left)) modelPosition[0] += left;
+            if (keyboard.IsKeyDown(Keys.Right)) modelPosition[0] += right;
+            if (keyboard.IsKeyDown(Keys.Up)) modelPosition[0] += forward;
+            if (keyboard.IsKeyDown(Keys.Down)) modelPosition[0] += backward;
 
             base.Update(gameTime);
         }
@@ -141,7 +147,7 @@ namespace CurlingSimulator
         /// 
 
         // Set the position of the model and set the rotation.
-        Vector3 modelPosition = Vector3.Zero;
+        Vector3[] modelPosition;
         float modelRotation = 0.0f;
 
         // Set the position of the camera 
@@ -156,30 +162,32 @@ namespace CurlingSimulator
             base.Draw(gameTime);
             spriteBatch.End();
 
-
-            // Copy any parent transforms.
-            Matrix[] transforms = new Matrix[myModel.Bones.Count];
-            myModel.CopyAbsoluteBoneTransformsTo(transforms);
-
-            // Draw the model. A model can have multiple meshes, so loop.
-            foreach (ModelMesh mesh in myModel.Meshes)
+            for (int i = 0; i < 6; i++)
             {
-                // This is where the mesh orientation is set, as well 
-                // as our camera and projection.
-                foreach (BasicEffect effect in mesh.Effects)
+                // Copy any parent transforms.
+                Matrix[] transforms = new Matrix[m_stones[i].getModel().Bones.Count];
+                m_stones[i].getModel().CopyAbsoluteBoneTransformsTo(transforms);
+
+                // Draw the model. A model can have multiple meshes, so loop.
+                foreach (ModelMesh mesh in m_stones[i].getModel().Meshes)
                 {
-                    effect.EnableDefaultLighting();
-                    effect.World = transforms[mesh.ParentBone.Index] *
-                        Matrix.CreateRotationY(modelRotation)
-                        * Matrix.CreateTranslation(modelPosition);
-                    effect.View = Matrix.CreateLookAt(cameraPosition,
-                        Vector3.Zero, Vector3.Up);
-                    effect.Projection = Matrix.CreatePerspectiveFieldOfView(
-                        MathHelper.ToRadians(45.0f), aspectRatio,
-                        1.0f, 10000.0f);
+                    // This is where the mesh orientation is set, as well 
+                    // as our camera and projection.
+                    foreach (BasicEffect effect in mesh.Effects)
+                    {
+                        effect.EnableDefaultLighting();
+                        effect.World = transforms[mesh.ParentBone.Index] *
+                            Matrix.CreateRotationY(modelRotation)
+                            * Matrix.CreateTranslation(modelPosition[i]);
+                        effect.View = Matrix.CreateLookAt(cameraPosition,
+                            Vector3.Zero, Vector3.Up);
+                        effect.Projection = Matrix.CreatePerspectiveFieldOfView(
+                            MathHelper.ToRadians(45.0f), aspectRatio,
+                            1.0f, 10000.0f);
+                    }
+                    // Draw the mesh, using the effects set above.
+                    mesh.Draw();
                 }
-                // Draw the mesh, using the effects set above.
-                mesh.Draw();
             }
 
 

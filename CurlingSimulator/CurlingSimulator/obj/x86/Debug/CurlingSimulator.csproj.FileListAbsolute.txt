@@ -8,3 +8,13 @@ C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulato
 C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Content\powerbar.xnb
 C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Content\Models\test.xnb
 C:\Users\stud\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Content\Models\Curlingstein.xnb
+C:\Users\Patrick\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Assets\Images\powerbar.png
+C:\Users\Patrick\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Content\Models\Curlingstein.xnb
+C:\Users\Patrick\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Content\powerbar.xnb
+C:\Users\Patrick\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\Content\Models\test.xnb
+C:\Users\Patrick\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\CurlingSimulator.exe
+C:\Users\Patrick\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\bin\x86\Debug\CurlingSimulator.pdb
+C:\Users\Patrick\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Patrick\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+C:\Users\Patrick\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\obj\x86\Debug\CurlingSimulator.exe
+C:\Users\Patrick\Documents\GitHub\CurlingSimulator\CurlingSimulator\CurlingSimulator\obj\x86\Debug\CurlingSimulator.pdb

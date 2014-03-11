@@ -162,6 +162,14 @@ namespace CurlingSimulator
             base.Draw(gameTime);
             spriteBatch.End();
 
+            DrawStone();
+
+
+            base.Draw(gameTime);
+        }
+
+        private void DrawStone()
+        {
             for (int i = 0; i < 6; i++)
             {
                 // Copy any parent transforms.
@@ -189,9 +197,6 @@ namespace CurlingSimulator
                     mesh.Draw();
                 }
             }
-
-
-            base.Draw(gameTime);
         }
     }
 }

@@ -25,8 +25,13 @@ namespace CurlingSimulator
         SpriteBatch spriteBatch;
 
         Texture2D powerbarText; //image files
+        Texture2D powerbarSlider;
 
         Vector2 powerbarPos = new Vector2(50, 480);
+        Vector2 powerbarSliderPos;
+
+        int ausschlag = 558;
+        bool moveSlider = true;
 
         float powerbarRot;
 
@@ -77,6 +82,7 @@ namespace CurlingSimulator
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             powerbarText = Content.Load<Texture2D>("powerbar_full");
+            powerbarSlider = Content.Load<Texture2D>("powerbar_slider");
 
             powerbarHeight = powerbarText.Height;
             powerbarWidth = powerbarText.Width;
@@ -148,6 +154,17 @@ namespace CurlingSimulator
                 m_stones[i].setPosition(m_stones[i].getPosition() + new Vector3(0, 0, m_stones[i].getVy()));
             }
 
+            //Powerbar ausschlag
+            if (keyboard.IsKeyDown(Keys.M))
+                moveSlider = false;
+            
+            if(moveSlider)
+                ausschlag -= 3;
+                if (ausschlag < 400)
+                    ausschlag = 558;
+
+            powerbarSliderPos = new Vector2(40, ausschlag);
+            
             base.Update(gameTime);
         }
 
@@ -169,6 +186,7 @@ namespace CurlingSimulator
             // TODO: Add your drawing code here
             spriteBatch.Begin(SpriteBlendMode.AlphaBlend);//start drawing 2D IMages
             spriteBatch.Draw(powerbarText, powerbarPos, null, Color.White, powerbarRot, powerbarCenter, 0.05f, SpriteEffects.None, 0.0f);
+            spriteBatch.Draw(powerbarSlider, powerbarSliderPos, Color.White);
             base.Draw(gameTime);
             spriteBatch.End();
 

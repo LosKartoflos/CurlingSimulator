@@ -19,14 +19,12 @@ namespace CurlingSimulator
         Vector2 m_sliderPos;
         Vector2 m_sliderZero;
 
-        Vector2 m_increasePower;
+        Vector2 m_div;
 
         //Texture2D m_texture;
         Texture2D m_slider;
 
         float m_max, m_min;
-
-        bool goRight;
 
         public Diversion(Vector2 pos)
         {
@@ -35,10 +33,9 @@ namespace CurlingSimulator
             //float test = m_texture.Height;
             m_sliderZero = new Vector2(m_pos.X + 400, m_pos.Y + 500);
             m_sliderPos = m_sliderZero;
-            m_increasePower = new Vector2(1, 0);
-            goRight = true;
-            m_max = m_sliderPos.X + 20;
-            m_min = m_sliderPos.X - 20;
+            m_div = new Vector2(4, 0);
+            m_max = m_sliderPos.X + 40;
+            m_min = m_sliderPos.X - 40;
         }
 
         public void setSlider(Texture2D slider)
@@ -48,29 +45,31 @@ namespace CurlingSimulator
 
         public float getValue()
         {
-            if (m_sliderPos.X > m_pos.X)
-                return (m_sliderPos.X - m_pos.X) / 20;
+            if (m_sliderPos.X > m_sliderZero.X)
+                return (m_sliderPos.X - m_sliderZero.X) / 40;
             else
-                return (m_pos.X - m_sliderPos.X) / 20 * (-1);
+                return (m_sliderZero.X - m_sliderPos.X) / 40 * (-1);
         }
 
         public void draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(m_slider, m_sliderPos, null, Color.White, 0, m_pos, 1.0f, SpriteEffects.None, 0.0f);
         }
-       
-        public void update()
+  
+        public void moveLeft()
         {
-            if (goRight)
-                m_sliderPos += m_increasePower;
-            else
-                m_sliderPos -= m_increasePower;
+            m_sliderPos -= m_div;
 
-            if (m_sliderPos.X >= m_max)
-                goRight = false;
+            if (m_sliderPos.X < m_min)
+                m_sliderPos.X = m_min;
+        }
 
-            if (m_sliderPos.X <= m_min)
-                goRight = true;
+        public void moveRight()
+        {
+            m_sliderPos += m_div;
+
+            if (m_sliderPos.X > m_max)
+                m_sliderPos.X = m_max;
         }
 
         public void setZero()

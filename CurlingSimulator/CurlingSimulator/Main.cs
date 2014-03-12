@@ -39,7 +39,6 @@ namespace CurlingSimulator
 
         // Diversion
         Diversion m_diversion;
-        bool m_moveDiversionSlider;
 
         // Models
         // Stones
@@ -101,7 +100,6 @@ namespace CurlingSimulator
             m_stoneScale = 6;
             m_idCurrentStone = -1;
             m_moveSlider = true;
-            m_moveDiversionSlider = true;
             m_zeroPosition = new Vector3(0, 0, 500);
             m_startPosition = new Vector3(0, 0, 0);
             m_previousGameTime = new GameTime();
@@ -118,7 +116,7 @@ namespace CurlingSimulator
             m_powerBar = new CPowerBar(Content.Load<Texture2D>("powerbar_full"), new Vector2(20, 450));
             m_powerBar.setSlider(Content.Load<Texture2D>("powerbar_slider"));
 
-            m_diversion = new Diversion(new Vector2(400, 400));
+            m_diversion = new Diversion(new Vector2(390, 400));
             m_diversion.setSlider(Content.Load<Texture2D>("powerbar_slider"));
 
             // TODO: use this.Content to load your game content here
@@ -207,8 +205,10 @@ namespace CurlingSimulator
                 m_idCurrentStone++;
                 if (m_idCurrentStone == 6)
                     m_idCurrentStone = 0;
-                float speed = m_powerBar.getValue() * -100 / 3;
-                m_stones[m_idCurrentStone].setVy((int)speed);
+                double speed = m_powerBar.getValue() * -100 / 3;
+                m_stones[m_idCurrentStone].setVy(speed);
+                double div = m_diversion.getValue() * 10;
+                m_stones[m_idCurrentStone].setVx(div);
                 if ((int)speed != 0)
                     m_moveSlider = false;
 
@@ -255,23 +255,26 @@ namespace CurlingSimulator
                     m_powerBar.update();
             }
 
+            // Update Diversion
+            if (m_keyboardState.IsKeyDown(Keys.Left))
+                m_diversion.moveLeft();
 
+            if (m_keyboardState.IsKeyDown(Keys.Right))
+                m_diversion.moveRight();
+            
+            
             if ((gameTime.TotalGameTime - m_previousGameTime.TotalGameTime).Milliseconds >= 100)
             {
 
                 // Apply Resistance
                 for (int i = 0; i < 6; i++)
                 {
-                    m_stones[i].setPosition(m_stones[i].getPosition() + new Vector3(0, 0, (int)m_stones[i].getVy()));
+                    m_stones[i].setPosition(m_stones[i].getPosition() + new Vector3((int)m_stones[i].getVx(), 0, (int)m_stones[i].getVy()));
                     if (m_stones[i].getVy() != 0 || m_stones[i].getVx() != 0)
                     {
                         m_stones[i].applyResistance();
                     }
                 }
-
-                // Update Diversion
-                if (m_moveDiversionSlider)
-                    m_diversion.update();
 
                 m_previousGameTime = new GameTime(gameTime.TotalRealTime, gameTime.ElapsedGameTime, gameTime.TotalGameTime, gameTime.ElapsedGameTime);
             }

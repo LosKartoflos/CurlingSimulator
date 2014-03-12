@@ -31,7 +31,7 @@ namespace CurlingSimulator
             m_diameter = 22;
         }
 
-        public void setVx(float vX)
+        public void setVx(double vX)
         {
             m_vX = vX;
         }
@@ -70,6 +70,7 @@ namespace CurlingSimulator
         public void applyResistance()
         {
             m_vY *= 0.65;
+            m_vX *= 0.65;
         }
 
         public void checkCollisionWith(CStone other)

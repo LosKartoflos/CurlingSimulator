@@ -110,6 +110,7 @@ namespace CurlingSimulator
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
+            // Reset stones if every stone was played and stopped moving
             bool bNoMoreStones = true;
             for (int i = 0; i < 6; ++i)
             {
@@ -119,7 +120,6 @@ namespace CurlingSimulator
                     break;
                 }
             }
-
             if (bNoMoreStones)
             {
                 for (int i = 0; i < 6; ++i)
@@ -132,6 +132,8 @@ namespace CurlingSimulator
             m_stoneRotation += (float)gameTime.ElapsedGameTime.TotalMilliseconds *
             MathHelper.ToRadians(0.1f);
 
+
+            // Check if any stone is moving
             bool somethingMoving = false;
             for (int i = 0; i < 6; i++)
             {
@@ -148,8 +150,8 @@ namespace CurlingSimulator
                 m_moveSlider = true;
             }
 
+            // Shoot new stone
             m_wasMoving = somethingMoving;
-
             bool spaceWasDown = m_keyboardState.IsKeyDown(Keys.Space);
             m_keyboardState = Keyboard.GetState();
             if (spaceWasDown && m_keyboardState.IsKeyUp(Keys.Space) && !somethingMoving)
@@ -161,6 +163,8 @@ namespace CurlingSimulator
                 m_stones[m_idCurrentStone].setVy((int)speed);
                 m_moveSlider = false;
             }
+
+            // Apply Resistance
             for (int i = 0; i < 6; i++)
             {
                 m_stones[i].setPosition(m_stones[i].getPosition() + new Vector3(0, 0, m_stones[i].getVy()));
@@ -170,6 +174,7 @@ namespace CurlingSimulator
                 }
             }
 
+            // Update Powerbar
             if (m_moveSlider)
                 m_powerBar.update();
 

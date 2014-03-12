@@ -42,16 +42,19 @@ namespace CurlingSimulator
         CStone[] m_stones;
         int m_idCurrentStone;
         float m_stoneRotation;
+        float m_stoneScale;
         Vector3 m_zeroPosition;
 
         // Floor
         Floor m_iceFloor;
         Vector3 m_iceFloorPos;
+        float m_iceFloorScale;
         float m_iceFloorRotation;
 
         // Camera
         Vector3 m_cameraPosition;
         Vector3 m_cameraPositionOffset;
+        Vector3 m_cameraLookAt;
 
 
         public Main()
@@ -68,16 +71,20 @@ namespace CurlingSimulator
         protected override void Initialize()
         {
             m_keyboardState = Keyboard.GetState();
-            m_cameraPositionOffset = new Vector3(0.0f, 50.0f, 100.0f);
+            m_cameraPositionOffset = new Vector3(0.0f, 200.0f, 600.0f);
             m_cameraPosition = m_cameraPositionOffset;
-            m_iceFloorRotation = 1.60f;
-            m_iceFloorPos = new Vector3(16, -3, 0);
+            m_iceFloorRotation = 0.0f;
+            m_iceFloorPos = new Vector3(0, -3, -20);
+            m_iceFloorScale = 300;
             m_stoneRotation = 0.0f;
+            m_stoneScale = 6;
             m_idCurrentStone = 0;
             m_moveSlider = true;
             m_zeroPosition = new Vector3(0, 0, 0);
             m_previousGameTime = new GameTime();
 
+
+            m_cameraLookAt = new Vector3(0, 0, 0);
             base.Initialize();
         }
 
@@ -96,8 +103,7 @@ namespace CurlingSimulator
             {
                 m_stones[i] = new CStone(Content.Load<Model>("Models\\Curlingstein"), 0, 0, 0);
             }
-                m_iceFloor = new Floor(Content.Load<Model>("Models\\EisFlaeche"), 0, 0, 0);
-
+                m_iceFloor = new Floor(Content.Load<Model>("Models\\EisFlaeche2"), 0, 0, 0);
             //sets the Aspect Ratio
             m_aspectRatio = m_graphics.GraphicsDevice.Viewport.AspectRatio;
         }
@@ -204,10 +210,10 @@ namespace CurlingSimulator
             m_spriteBatch.Begin(SpriteBlendMode.AlphaBlend);//start drawing 2D IMages
             m_powerBar.draw(m_spriteBatch);
             m_spriteBatch.End();
-
+            DrawFloor();
             DrawStone();
 
-            DrawFloor();
+            
 
             base.Draw(gameTime);
         }
@@ -230,9 +236,10 @@ namespace CurlingSimulator
                         effect.EnableDefaultLighting();
                         effect.World = transforms[mesh.ParentBone.Index] *
                             Matrix.CreateRotationY(m_stoneRotation)
-                            * Matrix.CreateTranslation(m_stones[i].getPosition());
+                            * Matrix.CreateTranslation(m_stones[i].getPosition())
+                            * Matrix.CreateScale(m_stoneScale);
                         effect.View = Matrix.CreateLookAt(m_cameraPosition,
-                            Vector3.Zero, Vector3.Up);
+                            m_cameraLookAt, Vector3.Up);
                         effect.Projection = Matrix.CreatePerspectiveFieldOfView(
                             MathHelper.ToRadians(45.0f), m_aspectRatio,
                             1.0f, 10000.0f);
@@ -262,9 +269,10 @@ namespace CurlingSimulator
                     effect.DirectionalLight0.SpecularColor = new Vector3(0, 1, 0);
                     effect.World = transforms[mesh.ParentBone.Index] *
                         Matrix.CreateRotationY(m_iceFloorRotation)
-                        * Matrix.CreateTranslation(m_iceFloorPos);
+                        * Matrix.CreateTranslation(m_iceFloorPos)
+                        * Matrix.CreateScale (m_iceFloorScale);
                     effect.View = Matrix.CreateLookAt(m_cameraPosition,
-                        Vector3.Zero, Vector3.Up);
+                        m_cameraLookAt, Vector3.Up);
                     effect.Projection = Matrix.CreatePerspectiveFieldOfView(
                         MathHelper.ToRadians(45.0f), m_aspectRatio,
                         1.0f, 10000.0f);

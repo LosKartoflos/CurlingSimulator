@@ -37,6 +37,10 @@ namespace CurlingSimulator
         CPowerBar m_powerBar;
         bool m_moveSlider;
 
+        // Diversion
+        Diversion m_diversion;
+        bool m_moveDiversionSlider;
+
         // Models
         // Stones
         CStone[] m_stones;
@@ -96,6 +100,7 @@ namespace CurlingSimulator
             m_stoneScale = 6;
             m_idCurrentStone = 0;
             m_moveSlider = true;
+            m_moveDiversionSlider = true;
             m_zeroPosition = new Vector3(0, 0, 0);
             m_previousGameTime = new GameTime();
 
@@ -111,6 +116,9 @@ namespace CurlingSimulator
 
             m_powerBar = new CPowerBar(Content.Load<Texture2D>("powerbar_full"), new Vector2(20, 450));
             m_powerBar.setSlider(Content.Load<Texture2D>("powerbar_slider"));
+
+            m_diversion = new Diversion(new Vector2(400, 400));
+            m_diversion.setSlider(Content.Load<Texture2D>("powerbar_slider"));
 
             // TODO: use this.Content to load your game content here
 
@@ -240,6 +248,10 @@ namespace CurlingSimulator
                 if (m_moveSlider)
                     m_powerBar.update();
 
+                // Update Diversion
+                if (m_moveDiversionSlider)
+                    m_diversion.update();
+
                 m_previousGameTime = new GameTime(gameTime.TotalRealTime, gameTime.ElapsedGameTime, gameTime.TotalGameTime, gameTime.ElapsedGameTime);
             }
             base.Update(gameTime);
@@ -251,6 +263,7 @@ namespace CurlingSimulator
 
             m_spriteBatch.Begin(SpriteBlendMode.AlphaBlend);//start drawing 2D IMages
             m_powerBar.draw(m_spriteBatch);
+            m_diversion.draw(m_spriteBatch);
             m_spriteBatch.End();
             DrawFloor();
             DrawStone();

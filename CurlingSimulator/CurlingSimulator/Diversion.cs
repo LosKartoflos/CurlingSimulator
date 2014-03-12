@@ -33,12 +33,12 @@ namespace CurlingSimulator
             //m_texture = texture;
             m_pos = pos;
             //float test = m_texture.Height;
-            m_sliderZero = new Vector2(m_pos.X, m_pos.Y);
+            m_sliderZero = new Vector2(m_pos.X + 400, m_pos.Y + 500);
             m_sliderPos = m_sliderZero;
             m_increasePower = new Vector2(1, 0);
             goRight = true;
-            m_max = m_pos.X + 20;
-            m_min = m_pos.X - 20;
+            m_max = m_sliderPos.X + 20;
+            m_min = m_sliderPos.X - 20;
         }
 
         public void setSlider(Texture2D slider)
@@ -56,11 +56,9 @@ namespace CurlingSimulator
 
         public void draw(SpriteBatch spriteBatch)
         {
-            //spriteBatch.Draw(m_texture, m_pos, null, Color.White, 0, m_pos, 0.05f, SpriteEffects.None, 0.0f);
-            spriteBatch.Draw(m_slider, m_sliderPos, null, Color.White, 90, m_pos, 1.0f, SpriteEffects.None, 0.0f);
-
+            spriteBatch.Draw(m_slider, m_sliderPos, null, Color.White, 0, m_pos, 1.0f, SpriteEffects.None, 0.0f);
         }
-
+       
         public void update()
         {
             if (goRight)

@@ -75,7 +75,7 @@ namespace CurlingSimulator
         SoundEffect soundSubmarine;
         SoundEffect soundIce;
 
-        SoundEffectInstance soundMitteLoop;
+        //SoundEffectInstance soundMitteLoop;
         SoundEffectInstance soundTrackSportsLoop;
 
 
@@ -93,14 +93,14 @@ namespace CurlingSimulator
         protected override void Initialize()
         {
             m_keyboardState = Keyboard.GetState();
-            m_cameraPositionOffset = new Vector3(0.0f, 200.0f, 600.0f);
+            m_cameraPositionOffset = new Vector3(0.0f, 20.0f, 60.0f);
             m_cameraPosition = m_cameraPositionOffset;
             m_iceFloorRotation = 0.0f;
-            m_iceFloorPos = new Vector3(0, -3, -20);
-            m_iceFloorScale = 300;
+            m_iceFloorPos = new Vector3(0, -3, -30);
+            m_iceFloorScale = 10;
             m_numberOfStones =8;
             m_stoneRotation = 0.0f;
-            m_stoneScale = 6;
+            m_stoneScale = 1;
             m_idCurrentStone = -1;
             m_moveSlider = true;
             m_zeroPosition = new Vector3(0, 0, 500);
@@ -130,7 +130,7 @@ namespace CurlingSimulator
                 m_stones[i] = new CStone(Content.Load<Model>("Models\\Curlingstein"), 0, 0, 500);
             }
             m_stones[0].setPosition(m_startPosition);
-                m_iceFloor = new Floor(Content.Load<Model>("Models\\EisFlaeche2"), 0, 0, 0);
+                m_iceFloor = new Floor(Content.Load<Model>("Models\\EisFlaeche7"), 0, 0, 0);
 
 
             //sets the Aspect Ratio
@@ -283,6 +283,20 @@ namespace CurlingSimulator
 
                 m_previousGameTime = new GameTime(gameTime.TotalRealTime, gameTime.ElapsedGameTime, gameTime.TotalGameTime, gameTime.ElapsedGameTime);
             }
+
+            if (m_idCurrentStone >= 0)
+            {
+                //Camera follows current stone
+                m_cameraLookAt = m_stones[m_idCurrentStone].getPosition();
+                //m_cameraPosition = m_stones[m_idCurrentStone].getPosition();
+                m_cameraPosition = m_stones[m_idCurrentStone].getPosition() + m_cameraPositionOffset;
+            }
+
+            //Watches values
+            Console.WriteLine("m_cameraPostion, x: " + m_cameraPosition.X + " y: " + m_cameraPosition.Y + " z: " + m_cameraPosition.Z);
+            //Console.WriteLine("m_stonePostion, x: " + m_stones[m_idCurrentStone].getPosition().X + " y: " + m_stones[m_idCurrentStone].getPosition().Y + " z: " + m_stones[m_idCurrentStone].getPosition().Z);
+
+
             base.Update(gameTime);
         }
 

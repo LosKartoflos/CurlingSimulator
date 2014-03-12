@@ -130,17 +130,17 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\EisFlaeche7.fbx">
+      <Name>EisFlaeche7</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="TestTexture.jpg">
       <Name>TestTexture</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Models\CurlingsteinBlue.fbx">
-      <Name>CurlingsteinBlue</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
     </Compile>
     <Compile Include="Models\CurlingsteinRed.fbx">
       <Name>CurlingsteinRed</Name>

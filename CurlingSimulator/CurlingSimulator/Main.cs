@@ -93,7 +93,7 @@ namespace CurlingSimulator
         protected override void Initialize()
         {
             m_keyboardState = Keyboard.GetState();
-            m_cameraPositionOffset = new Vector3(0.0f, 20.0f, 40.0f);
+            m_cameraPositionOffset = new Vector3(0.0f, 20.0f, 60.0f);
             m_cameraPosition = m_cameraPositionOffset;
             m_iceFloorRotation = 0.0f;
             m_iceFloorPos = new Vector3(0, -3, -400);

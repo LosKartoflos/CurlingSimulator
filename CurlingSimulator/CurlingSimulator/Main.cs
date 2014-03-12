@@ -56,6 +56,22 @@ namespace CurlingSimulator
         Vector3 m_cameraPositionOffset;
         Vector3 m_cameraLookAt;
 
+        //Soundeffekte
+        SoundEffect soundAnfang;
+        SoundEffect soundMitte;
+        SoundEffect soundEnde;
+        SoundEffect soundBlow;
+        SoundEffect soundCrowdBoo;
+        SoundEffect soundCrowdJubel;
+        SoundEffect soundSoundTrackAction;
+        SoundEffect soundSoundTrackSports;
+        SoundEffect soundHit;
+        SoundEffect soundSubmarine;
+        SoundEffect soundIce;
+
+        SoundEffectInstance soundMitteLoop;
+        SoundEffectInstance soundTrackSportsLoop;
+
 
         public Main()
         {
@@ -106,6 +122,24 @@ namespace CurlingSimulator
                 m_iceFloor = new Floor(Content.Load<Model>("Models\\EisFlaeche2"), 0, 0, 0);
             //sets the Aspect Ratio
             m_aspectRatio = m_graphics.GraphicsDevice.Viewport.AspectRatio;
+
+            // Load Sound Files
+            soundAnfang = Content.Load<SoundEffect>("Sounds\\01_Anfang");
+            soundMitte = Content.Load<SoundEffect>("Sounds\\02_Mitte");
+            soundEnde = Content.Load<SoundEffect>("Sounds\\03_Ende");
+            soundBlow = Content.Load<SoundEffect>("Sounds\\04_Blow");
+            soundCrowdBoo = Content.Load<SoundEffect>("Sounds\\05_CrowdBoo");
+            soundCrowdJubel = Content.Load<SoundEffect>("Sounds\\06_CrowdJubel");
+            soundSoundTrackAction = Content.Load<SoundEffect>("Sounds\\07_SoundTrackAction");
+            soundSoundTrackSports = Content.Load<SoundEffect>("Sounds\\08_SoundTrackSports");
+            soundHit = Content.Load<SoundEffect>("Sounds\\09_Hit");
+            soundSubmarine = Content.Load<SoundEffect>("Sounds\\10_Submarine");
+            soundIce = Content.Load<SoundEffect>("Sounds\\11_Ice");
+
+            // Loop Sound "07_SoundTrackSport" (Hintergrundmusik)
+            soundTrackSportsLoop = soundSoundTrackSports.CreateInstance();
+            soundTrackSportsLoop.IsLooped = true;
+            soundTrackSportsLoop.Play();
         }
 
         protected override void UnloadContent()
@@ -155,6 +189,14 @@ namespace CurlingSimulator
                 float speed = m_powerBar.getValue() * -100;
                 m_stones[m_idCurrentStone].setVy((int)speed);
                 m_moveSlider = false;
+
+                // Loop Sound "02_Mitte"
+                //soundMitteLoop = soundMitte.CreateInstance();
+                //soundMitteLoop.IsLooped = true;
+                //soundMitteLoop.Play();
+
+                // Sound "02_Mitte"
+                soundMitte.Play();
             }
 
             // Reset stones if every stone was played and stopped moving

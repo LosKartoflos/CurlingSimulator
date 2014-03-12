@@ -42,7 +42,9 @@ namespace CurlingSimulator
 
         // Models
         // Stones
+        int m_numberOfStones;
         CStone[] m_stones;
+        CStone[] m_stonesSecond;
         int m_idCurrentStone;
         float m_stoneRotation;
         float m_stoneScale;
@@ -96,6 +98,7 @@ namespace CurlingSimulator
             m_iceFloorRotation = 0.0f;
             m_iceFloorPos = new Vector3(0, -3, -20);
             m_iceFloorScale = 300;
+            m_numberOfStones =8;
             m_stoneRotation = 0.0f;
             m_stoneScale = 6;
             m_idCurrentStone = -1;
@@ -121,13 +124,15 @@ namespace CurlingSimulator
 
             // TODO: use this.Content to load your game content here
 
-            m_stones = new CStone[6];
-            for (int i = 0; i < 6; ++i)
+            m_stones = new CStone[m_numberOfStones];
+            for (int i = 0; i < m_numberOfStones; ++i)
             {
                 m_stones[i] = new CStone(Content.Load<Model>("Models\\Curlingstein"), 0, 0, 500);
             }
             m_stones[0].setPosition(m_startPosition);
                 m_iceFloor = new Floor(Content.Load<Model>("Models\\EisFlaeche2"), 0, 0, 0);
+
+
             //sets the Aspect Ratio
             m_aspectRatio = m_graphics.GraphicsDevice.Viewport.AspectRatio;
 
@@ -163,14 +168,14 @@ namespace CurlingSimulator
 
             // Check if any stone is moving
             bool somethingMoving = false;
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < m_numberOfStones; i++)
             {
                 m_stones[i].setPosition(m_stones[i].getPosition() + new Vector3(0, 0, (int)m_stones[i].getVy()));
                 if ((int)m_stones[i].getVy() != 0 || (int)m_stones[i].getVx() != 0)
                 {
                     somethingMoving = true;
                     // Check if colliding with other stone
-                    for (int j = 0; j < 6; j++)
+                    for (int j = 0; j < m_numberOfStones; j++)
                     {
                         if (j != i)
                         {
@@ -184,12 +189,12 @@ namespace CurlingSimulator
                 m_powerBar.setZero();
                 m_moveSlider = true;
                 int nextId = m_idCurrentStone + 1;
-                if (nextId == 6)
+                if (nextId == m_numberOfStones)
                     nextId = 0;
                 m_stones[nextId].setPosition(m_startPosition);
                 if (nextId == 0)
                 {
-                    for (int i = 1; i < 6; ++i)
+                    for (int i = 1; i < m_numberOfStones; ++i)
                     {
                         m_stones[i].setPosition(m_zeroPosition);
                     }
@@ -203,7 +208,7 @@ namespace CurlingSimulator
             if (spaceWasDown && m_keyboardState.IsKeyUp(Keys.Space) && !somethingMoving)
             {
                 m_idCurrentStone++;
-                if (m_idCurrentStone == 6)
+                if (m_idCurrentStone == m_numberOfStones)
                     m_idCurrentStone = 0;
                 double speed = m_powerBar.getValue() * -100 / 3 - 2;
                 m_stones[m_idCurrentStone].setVy(speed);
@@ -223,7 +228,7 @@ namespace CurlingSimulator
 
             // Reset stones if every stone was played and stopped moving
             bool bNoMoreStones = true;
-            for (int i = 0; i < 6; ++i)
+            for (int i = 0; i < m_numberOfStones; ++i)
             {
                 if ((m_stones[i].getPosition() == m_zeroPosition  || m_stones[i].getPosition() == m_startPosition)|| (int)m_stones[i].getVx() != 0 || (int)m_stones[i].getVy() != 0)
                 {
@@ -233,12 +238,12 @@ namespace CurlingSimulator
             }
             if (bNoMoreStones)
             {
-                for (int i = 0; i < 6; ++i)
+                for (int i = 0; i < m_numberOfStones; ++i)
                 {
                     m_stones[i].setPosition(m_zeroPosition);
                 }
                 int nextId = m_idCurrentStone + 1;
-                if (nextId == 6)
+                if (nextId == m_numberOfStones)
                     nextId = 0;
                 m_stones[nextId].setPosition(m_startPosition);
             }
@@ -267,7 +272,7 @@ namespace CurlingSimulator
             {
 
                 // Apply Resistance
-                for (int i = 0; i < 6; i++)
+                for (int i = 0; i < m_numberOfStones; i++)
                 {
                     m_stones[i].setPosition(m_stones[i].getPosition() + new Vector3((int)m_stones[i].getVx(), 0, (int)m_stones[i].getVy()));
                     if (m_stones[i].getVy() != 0 || m_stones[i].getVx() != 0)
@@ -299,7 +304,7 @@ namespace CurlingSimulator
 
         private void DrawStone()
         {
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < m_numberOfStones; i++)
             {
                 // Copy any parent transforms.
                 Matrix[] transforms = new Matrix[m_stones[i].getModel().Bones.Count];

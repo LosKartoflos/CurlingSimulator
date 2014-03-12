@@ -205,9 +205,9 @@ namespace CurlingSimulator
                 m_idCurrentStone++;
                 if (m_idCurrentStone == 6)
                     m_idCurrentStone = 0;
-                double speed = m_powerBar.getValue() * -100 / 3;
+                double speed = m_powerBar.getValue() * -100 / 3 - 2;
                 m_stones[m_idCurrentStone].setVy(speed);
-                double div = m_diversion.getValue() * 10;
+                double div = m_diversion.getValue() * speed * (-0.3);
                 m_stones[m_idCurrentStone].setVx(div);
                 if ((int)speed != 0)
                     m_moveSlider = false;
@@ -263,7 +263,7 @@ namespace CurlingSimulator
                 m_diversion.moveRight();
             
             
-            if ((gameTime.TotalGameTime - m_previousGameTime.TotalGameTime).Milliseconds >= 100)
+            if ((gameTime.TotalGameTime - m_previousGameTime.TotalGameTime).Milliseconds >= 15)
             {
 
                 // Apply Resistance

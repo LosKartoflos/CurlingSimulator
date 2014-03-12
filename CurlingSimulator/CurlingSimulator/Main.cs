@@ -25,6 +25,7 @@ namespace CurlingSimulator
         GraphicsDeviceManager m_graphics;
         SpriteBatch m_spriteBatch;
         float m_aspectRatio;
+        GameTime m_previousGameTime;
 
         // Previous Keyboard State
         KeyboardState m_keyboardState;
@@ -75,6 +76,8 @@ namespace CurlingSimulator
             m_idCurrentStone = 0;
             m_moveSlider = true;
             m_zeroPosition = new Vector3(0, 0, 0);
+            m_previousGameTime = new GameTime();
+
             base.Initialize();
         }
 
@@ -110,38 +113,22 @@ namespace CurlingSimulator
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            // Reset stones if every stone was played and stopped moving
-            bool bNoMoreStones = true;
-            for (int i = 0; i < 6; ++i)
-            {
-                if (m_stones[i].getPosition() == m_zeroPosition || m_stones[i].getVx() != 0 || m_stones[i].getVy() != 0)
-                {
-                    bNoMoreStones = false;
-                    break;
-                }
-            }
-            if (bNoMoreStones)
-            {
-                for (int i = 0; i < 6; ++i)
-                {
-                    m_stones[i].setPosition(m_zeroPosition);
-                }
-            }
-
-            //Makes the Modelrotating
-            m_stoneRotation += (float)gameTime.ElapsedGameTime.TotalMilliseconds *
-            MathHelper.ToRadians(0.1f);
-
-
             // Check if any stone is moving
             bool somethingMoving = false;
             for (int i = 0; i < 6; i++)
             {
-                m_stones[i].setPosition(m_stones[i].getPosition() + new Vector3(0, 0, m_stones[i].getVy()));
-                if (m_stones[i].getVy() != 0 || m_stones[i].getVx() != 0)
+                m_stones[i].setPosition(m_stones[i].getPosition() + new Vector3(0, 0, (int)m_stones[i].getVy()));
+                if ((int)m_stones[i].getVy() != 0 || (int)m_stones[i].getVx() != 0)
                 {
                     somethingMoving = true;
-                    break;
+                    // Check if colliding with other stone
+                    for (int j = 0; j < 6; j++)
+                    {
+                        if (j != i)
+                        {
+                            m_stones[i].checkCollisionWith(m_stones[j]);
+                        }
+                    }
                 }
             }
             if (!somethingMoving && m_wasMoving)
@@ -164,21 +151,49 @@ namespace CurlingSimulator
                 m_moveSlider = false;
             }
 
-            // Apply Resistance
-            for (int i = 0; i < 6; i++)
+            // Reset stones if every stone was played and stopped moving
+            bool bNoMoreStones = true;
+            for (int i = 0; i < 6; ++i)
             {
-                m_stones[i].setPosition(m_stones[i].getPosition() + new Vector3(0, 0, m_stones[i].getVy()));
-                if (m_stones[i].getVy() != 0 || m_stones[i].getVx() != 0)
+                if (m_stones[i].getPosition() == m_zeroPosition || (int)m_stones[i].getVx() != 0 || (int)m_stones[i].getVy() != 0)
                 {
-                    m_stones[i].applyResistance();
+                    bNoMoreStones = false;
+                    break;
+                }
+            }
+            if (bNoMoreStones)
+            {
+                for (int i = 0; i < 6; ++i)
+                {
+                    m_stones[i].setPosition(m_zeroPosition);
                 }
             }
 
-            // Update Powerbar
-            if (m_moveSlider)
-                m_powerBar.update();
+            //Makes the Modelrotating
+            m_stoneRotation += (float)gameTime.ElapsedGameTime.TotalMilliseconds *
+            MathHelper.ToRadians(0.1f);
 
 
+
+            if ((gameTime.TotalGameTime - m_previousGameTime.TotalGameTime).Milliseconds >= 50)
+            {
+
+                // Apply Resistance
+                for (int i = 0; i < 6; i++)
+                {
+                    m_stones[i].setPosition(m_stones[i].getPosition() + new Vector3(0, 0, (int)m_stones[i].getVy()));
+                    if (m_stones[i].getVy() != 0 || m_stones[i].getVx() != 0)
+                    {
+                        m_stones[i].applyResistance();
+                    }
+                }
+
+                // Update Powerbar
+                if (m_moveSlider)
+                    m_powerBar.update();
+
+                m_previousGameTime = new GameTime(gameTime.TotalRealTime, gameTime.ElapsedGameTime, gameTime.TotalGameTime, gameTime.ElapsedGameTime);
+            }
             base.Update(gameTime);
         }
 

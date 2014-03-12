@@ -17,7 +17,8 @@ namespace CurlingSimulator
     {
         Vector3 m_position;
         Model m_model;
-        int m_vX, m_vY;
+        double m_vX, m_vY;
+        double m_diameter;
 
         public CStone(Model model, int x, int y, int z)
         {
@@ -29,22 +30,22 @@ namespace CurlingSimulator
             m_vY = 0;
         }
 
-        public void setVx(int vX)
+        public void setVx(float vX)
         {
             m_vX = vX;
         }
 
-        public int getVx()
+        public double getVx()
         {
             return m_vX;
         }
 
-        public void setVy(int vY)
+        public void setVy(double vY)
         {
             m_vY = vY;
         }
 
-        public int getVy()
+        public double getVy()
         {
             return m_vY;
         }
@@ -67,7 +68,22 @@ namespace CurlingSimulator
 
         public void applyResistance()
         {
-            ++m_vY;
+            m_vY *= 0.8;
+        }
+
+        public void checkCollisionWith(CStone other)
+        {
+            double dX = this.getPosition().X - other.getPosition().X;
+            double dY = this.getPosition().Y - other.getPosition().Y;
+            if (Math.Sqrt(dX * dX + dY * dY) <= m_diameter)
+            {
+                applyCollision(other);
+            }
+        }
+
+        public void applyCollision(CStone other)
+        {
+
         }
     }
 

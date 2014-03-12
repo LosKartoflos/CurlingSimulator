@@ -48,6 +48,7 @@ namespace CurlingSimulator
         float m_stoneRotation;
         float m_stoneScale;
         Vector3 m_zeroPosition;
+        Vector3 m_startPosition;
 
         // Floor
         Floor m_iceFloor;
@@ -98,12 +99,12 @@ namespace CurlingSimulator
             m_iceFloorScale = 300;
             m_stoneRotation = 0.0f;
             m_stoneScale = 6;
-            m_idCurrentStone = 0;
+            m_idCurrentStone = -1;
             m_moveSlider = true;
             m_moveDiversionSlider = true;
-            m_zeroPosition = new Vector3(0, 0, 0);
+            m_zeroPosition = new Vector3(0, 0, 500);
+            m_startPosition = new Vector3(0, 0, 0);
             m_previousGameTime = new GameTime();
-
 
             m_cameraLookAt = new Vector3(0, 0, 0);
             base.Initialize();
@@ -125,8 +126,9 @@ namespace CurlingSimulator
             m_stones = new CStone[6];
             for (int i = 0; i < 6; ++i)
             {
-                m_stones[i] = new CStone(Content.Load<Model>("Models\\Curlingstein"), 0, 0, 0);
+                m_stones[i] = new CStone(Content.Load<Model>("Models\\Curlingstein"), 0, 0, 500);
             }
+            m_stones[0].setPosition(m_startPosition);
                 m_iceFloor = new Floor(Content.Load<Model>("Models\\EisFlaeche2"), 0, 0, 0);
             //sets the Aspect Ratio
             m_aspectRatio = m_graphics.GraphicsDevice.Viewport.AspectRatio;
@@ -183,6 +185,17 @@ namespace CurlingSimulator
             {
                 m_powerBar.setZero();
                 m_moveSlider = true;
+                int nextId = m_idCurrentStone + 1;
+                if (nextId == 6)
+                    nextId = 0;
+                m_stones[nextId].setPosition(m_startPosition);
+                if (nextId == 0)
+                {
+                    for (int i = 1; i < 6; ++i)
+                    {
+                        m_stones[i].setPosition(m_zeroPosition);
+                    }
+                }
             }
 
             // Shoot new stone
@@ -194,9 +207,10 @@ namespace CurlingSimulator
                 m_idCurrentStone++;
                 if (m_idCurrentStone == 6)
                     m_idCurrentStone = 0;
-                float speed = m_powerBar.getValue() * -100;
+                float speed = m_powerBar.getValue() * -100 / 3;
                 m_stones[m_idCurrentStone].setVy((int)speed);
-                m_moveSlider = false;
+                if ((int)speed != 0)
+                    m_moveSlider = false;
 
                 // Loop Sound "02_Mitte"
                 //soundMitteLoop = soundMitte.CreateInstance();
@@ -211,7 +225,7 @@ namespace CurlingSimulator
             bool bNoMoreStones = true;
             for (int i = 0; i < 6; ++i)
             {
-                if (m_stones[i].getPosition() == m_zeroPosition || (int)m_stones[i].getVx() != 0 || (int)m_stones[i].getVy() != 0)
+                if ((m_stones[i].getPosition() == m_zeroPosition  || m_stones[i].getPosition() == m_startPosition)|| (int)m_stones[i].getVx() != 0 || (int)m_stones[i].getVy() != 0)
                 {
                     bNoMoreStones = false;
                     break;
@@ -223,6 +237,10 @@ namespace CurlingSimulator
                 {
                     m_stones[i].setPosition(m_zeroPosition);
                 }
+                int nextId = m_idCurrentStone + 1;
+                if (nextId == 6)
+                    nextId = 0;
+                m_stones[nextId].setPosition(m_startPosition);
             }
 
             //Makes the Modelrotating
@@ -230,8 +248,15 @@ namespace CurlingSimulator
             MathHelper.ToRadians(0.1f);
 
 
+            // Update Powerbar
+            if ((gameTime.TotalGameTime - m_previousGameTime.TotalGameTime).Milliseconds >= 10)
+            {
+                if (m_moveSlider)
+                    m_powerBar.update();
+            }
 
-            if ((gameTime.TotalGameTime - m_previousGameTime.TotalGameTime).Milliseconds >= 50)
+
+            if ((gameTime.TotalGameTime - m_previousGameTime.TotalGameTime).Milliseconds >= 100)
             {
 
                 // Apply Resistance
@@ -243,10 +268,6 @@ namespace CurlingSimulator
                         m_stones[i].applyResistance();
                     }
                 }
-
-                // Update Powerbar
-                if (m_moveSlider)
-                    m_powerBar.update();
 
                 // Update Diversion
                 if (m_moveDiversionSlider)

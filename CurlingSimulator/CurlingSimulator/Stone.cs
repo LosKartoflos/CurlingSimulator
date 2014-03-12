@@ -28,6 +28,7 @@ namespace CurlingSimulator
             m_position.Z = z;
             m_vX = 0;
             m_vY = 0;
+            m_diameter = 22;
         }
 
         public void setVx(float vX)
@@ -68,13 +69,13 @@ namespace CurlingSimulator
 
         public void applyResistance()
         {
-            m_vY *= 0.8;
+            m_vY *= 0.65;
         }
 
         public void checkCollisionWith(CStone other)
         {
             double dX = this.getPosition().X - other.getPosition().X;
-            double dY = this.getPosition().Y - other.getPosition().Y;
+            double dY = this.getPosition().Z - other.getPosition().Z;
             if (Math.Sqrt(dX * dX + dY * dY) <= m_diameter)
             {
                 applyCollision(other);
@@ -83,7 +84,8 @@ namespace CurlingSimulator
 
         public void applyCollision(CStone other)
         {
-
+            other.setVy(this.m_vY);
+            this.m_vY = 0;
         }
     }
 

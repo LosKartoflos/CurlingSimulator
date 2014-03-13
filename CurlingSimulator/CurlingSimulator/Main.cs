@@ -324,8 +324,8 @@ namespace CurlingSimulator
                     for (int i = 0; i < m_numberOfStones; ++i)
                     {
                         Vector3 currentStone = m_stones[i].getPosition();
-                        Vector3 floorPosition = m_iceFloor.getPosition();
-                        if (Math.Pow(currentStone.X - floorPosition.X, 2) + Math.Pow(currentStone.Z - floorPosition.Z, 2) < 20)
+                        // Mittels Pythagoras Abstand zwischen aktuellem Stein und Zielpunkt(0,3,-400) berechnen, Zielradius ist 21
+                        if (Math.Sqrt(Math.Pow(currentStone.X - 0, 2) + Math.Pow(currentStone.Z + 400, 2)) < 21)
                             m_pointCounter++;
                     }
                 }

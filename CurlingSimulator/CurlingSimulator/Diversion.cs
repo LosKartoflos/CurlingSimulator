@@ -33,7 +33,7 @@ namespace CurlingSimulator
             //float test = m_texture.Height;
             m_sliderZero = new Vector2(m_pos.X + 400, m_pos.Y + 500);
             m_sliderPos = m_sliderZero;
-            m_div = new Vector2(4, 0);
+            m_div = new Vector2(1, 0);
             m_max = m_sliderPos.X + 40;
             m_min = m_sliderPos.X - 40;
         }

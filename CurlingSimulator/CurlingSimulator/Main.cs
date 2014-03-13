@@ -65,6 +65,10 @@ namespace CurlingSimulator
         float m_iceFloorRotation;
 
         //Arrow
+        Arrow m_arrow;
+        Vector3 m_arrowPos;
+        float m_arrowScale;
+        float m_arrowRotation;
 
         // Camera
         Vector3 m_cameraPosition;
@@ -145,6 +149,10 @@ namespace CurlingSimulator
             m_iceFloorRotation = 0.0f;
             m_iceFloorPos = new Vector3(0.0f, 0.5f, -400.0f);
             m_iceFloorScale = 1;
+            //Arrow
+            m_arrowPos = new Vector3(0.0f, 1.0f, 0.0f);
+            m_arrowRotation = 0;
+            m_arrowScale = 1;
             //Stone
             m_numberOfStones =8;
             m_stoneRotation = 0.0f;
@@ -194,7 +202,10 @@ namespace CurlingSimulator
                 m_stones[i] = new CStone(Content.Load<Model>("Models\\CurlingsteinRed"), 0, 0, 500);
             }
             m_stones[0].setPosition(m_startPosition);
-                m_iceFloor = new Floor(Content.Load<Model>("Models\\EisFlaeche10"), 0, 0, 0);
+                
+            m_iceFloor = new Floor(Content.Load<Model>("Models\\EisFlaeche10"), 0, 0, 0);
+
+            m_arrow = new Arrow(Content.Load<Model>("Models\\Arrow"), 0, 0, 0);
 
 
             //sets the Aspect Ratio
@@ -355,6 +366,8 @@ namespace CurlingSimulator
                 if (m_keyboardState.IsKeyDown(Keys.Right))
                     m_diversion.moveRight();
 
+                m_arrowRotation = m_diversion.getValue() * -0.158f;
+
 
                 // Apply Resistance
                 for (int i = 0; i < m_numberOfStones; i++)
@@ -487,6 +500,7 @@ namespace CurlingSimulator
             GraphicsDevice.Clear(Color.White);
 
             DrawFloor();
+            DrawArrow();
             DrawStone();
 
             m_spriteBatch.Begin(SpriteBlendMode.AlphaBlend);//start drawing 2D IMages
@@ -588,6 +602,39 @@ namespace CurlingSimulator
                 // Draw the mesh, using the effects set above.
                 mesh.Draw();
      
+            }
+        }
+
+        private void DrawArrow()
+        {
+
+            // Copy any parent transforms.
+            Matrix[] transforms = new Matrix[m_arrow.getModel().Bones.Count];
+            m_arrow.getModel().CopyAbsoluteBoneTransformsTo(transforms);
+
+            // Draw the model. A model can have multiple meshes, so loop.
+            foreach (ModelMesh mesh in m_arrow.getModel().Meshes)
+            {
+                // This is where the mesh orientation is set, as well 
+                // as our camera and projection.
+                foreach (BasicEffect effect in mesh.Effects)
+                {
+                    effect.EnableDefaultLighting();
+                    effect.DirectionalLight0.DiffuseColor = new Vector3(3.0f, 3.0f, 3.0f); 
+                    effect.DirectionalLight0.SpecularColor = new Vector3(0, 1, 0);
+                    effect.World = transforms[mesh.ParentBone.Index] *
+                        Matrix.CreateRotationY(m_arrowRotation)
+                        * Matrix.CreateTranslation(m_arrowPos)
+                        * Matrix.CreateScale(m_arrowScale);
+                    effect.View = Matrix.CreateLookAt(m_cameraPosition,
+                        m_cameraLookAt, Vector3.Up);
+                    effect.Projection = Matrix.CreatePerspectiveFieldOfView(
+                        MathHelper.ToRadians(45.0f), m_aspectRatio,
+                        1.0f, 10000.0f);
+                }
+                // Draw the mesh, using the effects set above.
+                mesh.Draw();
+
             }
         }
 

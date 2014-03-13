@@ -84,6 +84,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Arrow.cs" />
     <Compile Include="Diversion.cs" />
     <Compile Include="Floor.cs" />
     <Compile Include="Powerbar.cs" />

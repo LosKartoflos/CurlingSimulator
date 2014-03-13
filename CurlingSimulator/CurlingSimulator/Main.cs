@@ -40,6 +40,9 @@ namespace CurlingSimulator
         // Diversion
         Diversion m_diversion;
 
+        // Point Counter
+        int m_pointCounter;
+
         // Models
         // Stones
         int m_numberOfStones;
@@ -115,6 +118,8 @@ namespace CurlingSimulator
             m_zeroPosition = new Vector3(0, 0, 500);
             m_startPosition = new Vector3(0, 0, 0);
             m_previousGameTime = new GameTime();
+
+            m_pointCounter = 0;
 
             m_cameraLookAt = new Vector3(0, 0, 0);
             base.Initialize();
@@ -257,6 +262,18 @@ namespace CurlingSimulator
                 if (nextId == m_numberOfStones)
                     nextId = 0;
                 m_stones[nextId].setPosition(m_startPosition);
+            }
+
+            //Count the Points
+            if (bNoMoreStones)
+            {
+                for (int i = 0; i < m_numberOfStones; ++i)
+                {
+                    Vector3 currentStone = m_stones[i].getPosition();
+                    Vector3 floorPosition = m_iceFloor.getPosition();
+                    if (Math.Pow(currentStone.X - floorPosition.X, 2) + Math.Pow(currentStone.Z - floorPosition.Z, 2) < 20)
+                        m_pointCounter++;
+                }
             }
 
             //Makes the Modelrotating

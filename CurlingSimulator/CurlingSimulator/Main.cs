@@ -70,6 +70,12 @@ namespace CurlingSimulator
         float m_arrowScale;
         float m_arrowRotation;
 
+        //Hall
+        Hall m_hall;
+        Vector3 m_hallPos;
+        float m_hallScale;
+        float m_hallRotation;
+
         // Camera
         Vector3 m_cameraPosition;
         Vector3 m_cameraPositionOffset;
@@ -153,6 +159,10 @@ namespace CurlingSimulator
             m_arrowPos = new Vector3(0.0f, 1.0f, 0.0f);
             m_arrowRotation = 0;
             m_arrowScale = 1;
+            //Hall
+            m_hallPos = new Vector3(0.0f, -0.5f, -3.0f);
+            m_hallRotation = 0;
+            m_hallScale = 1;
             //Stone
             m_numberOfStones =8;
             m_stoneRotation = 0.0f;
@@ -206,6 +216,8 @@ namespace CurlingSimulator
             m_iceFloor = new Floor(Content.Load<Model>("Models\\EisFlaeche10"), 0, 0, 0);
 
             m_arrow = new Arrow(Content.Load<Model>("Models\\Arrow"), 0, 0, 0);
+
+            m_hall = new Hall(Content.Load<Model>("Models\\Hall2"), 0, 0, 0);
 
 
             //sets the Aspect Ratio
@@ -499,9 +511,11 @@ namespace CurlingSimulator
         {
             GraphicsDevice.Clear(Color.White);
 
+            //DrawHall();
             DrawFloor();
             DrawArrow();
             DrawStone();
+            DrawHall();
 
             m_spriteBatch.Begin(SpriteBlendMode.AlphaBlend);//start drawing 2D IMages
             m_powerBar.draw(m_spriteBatch);
@@ -602,6 +616,39 @@ namespace CurlingSimulator
                 // Draw the mesh, using the effects set above.
                 mesh.Draw();
      
+            }
+        }
+
+        private void DrawHall()
+        {
+            
+            // Copy any parent transforms.
+            Matrix[] transforms = new Matrix[m_hall.getModel().Bones.Count];
+            m_hall.getModel().CopyAbsoluteBoneTransformsTo(transforms);
+
+            // Draw the model. A model can have multiple meshes, so loop.
+            foreach (ModelMesh mesh in m_hall.getModel().Meshes)
+            {
+                // This is where the mesh orientation is set, as well 
+                // as our camera and projection.
+                foreach (BasicEffect effect in mesh.Effects)
+                {
+                    effect.EnableDefaultLighting();
+                    effect.DirectionalLight0.DiffuseColor = new Vector3(3.0f, 3.0f, 3.0f); // a red light
+                    effect.DirectionalLight0.SpecularColor = new Vector3(0, 1, 0);
+                    effect.World = transforms[mesh.ParentBone.Index] *
+                        Matrix.CreateRotationY(m_hallRotation)
+                        * Matrix.CreateTranslation(m_hallPos)
+                        * Matrix.CreateScale(m_hallScale);
+                    effect.View = Matrix.CreateLookAt(m_cameraPosition,
+                        m_cameraLookAt, Vector3.Up);
+                    effect.Projection = Matrix.CreatePerspectiveFieldOfView(
+                        MathHelper.ToRadians(45.0f), m_aspectRatio,
+                        1.0f, 10000.0f);
+                }
+                // Draw the mesh, using the effects set above.
+                mesh.Draw();
+
             }
         }
 

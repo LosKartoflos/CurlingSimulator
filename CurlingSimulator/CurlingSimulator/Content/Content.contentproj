@@ -250,8 +250,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Arrow.fbx">
-      <Name>Arrow</Name>
+    <Compile Include="FanCrowd.jpg">
+      <Name>FanCrowd</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\Hall2.fbx">
+      <Name>Hall2</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>

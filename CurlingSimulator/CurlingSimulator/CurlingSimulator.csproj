@@ -87,6 +87,7 @@
     <Compile Include="Arrow.cs" />
     <Compile Include="Diversion.cs" />
     <Compile Include="Floor.cs" />
+    <Compile Include="Hall.cs" />
     <Compile Include="Powerbar.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />

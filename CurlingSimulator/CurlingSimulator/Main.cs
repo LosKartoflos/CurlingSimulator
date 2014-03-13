@@ -276,7 +276,7 @@ namespace CurlingSimulator
                     m_idCurrentStone++;
                     if (m_idCurrentStone == m_numberOfStones)
                         m_idCurrentStone = 0;
-                    float speed = m_powerBar.getValue() * -1;
+                    float speed = m_powerBar.getValue() * -4.05f;
                     if (speed <= 0.001)
                     {
                         m_stones[m_idCurrentStone].setVy(speed);

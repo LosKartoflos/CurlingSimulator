@@ -67,8 +67,10 @@ namespace CurlingSimulator
         Vector3 m_cameraPosition;
         Vector3 m_cameraPositionOffset;
         Vector3 m_cameraPositionOffsetField;
+        Vector3 m_cameraPositionAllField;
         Vector3 m_cameraLookAt;
         Vector3 m_cameraLookAtOffsetField;
+        Vector3 m_cameraLookAtAllField;
         int m_stoneIdCamera;
 
         //Soundeffekte
@@ -122,10 +124,12 @@ namespace CurlingSimulator
 
             m_keyboardState = Keyboard.GetState();
             //Camera
-            m_cameraPositionOffset = new Vector3(0.0f, 20.0f, 40.0f);
-            m_cameraPositionOffsetField = new Vector3(.0f, 130.0f, 16.5f);
+            m_cameraPositionOffset = new Vector3(0.0f, 7.0f, 20.0f);
+            m_cameraPositionOffsetField = new Vector3(0.0f, 130.0f, 16.5f);
             m_cameraLookAtOffsetField = new Vector3(0f, 0, 16.0f);
             m_cameraPosition = m_cameraPositionOffset;
+            m_cameraPositionAllField = new Vector3(0.0f, 130.0f, 85.0f);
+            m_cameraLookAtAllField = new Vector3(0.0f, 30.0f,-50.0f);
             m_stoneIdCamera = 0;
             //IceFloor
             m_iceFloorRotation = 0.0f;
@@ -349,7 +353,13 @@ namespace CurlingSimulator
                 m_cameraLookAt = m_iceFloorPos + m_cameraLookAtOffsetField;
                 m_cameraPosition = m_iceFloorPos + m_cameraPositionOffsetField;
             }
-            else if (m_idCurrentStone >= 0 || m_keyboardState.IsKeyDown(Keys.LeftAlt) == true)
+            //if Alt is pressed you look at the whole Field
+            else if (m_keyboardState.IsKeyDown(Keys.LeftAlt) == true)
+            {
+                m_cameraLookAt = m_cameraLookAtAllField;
+                m_cameraPosition = m_cameraPositionAllField;
+            }
+            else if (m_idCurrentStone >= 0 || (m_keyboardState.IsKeyDown(Keys.LeftAlt) == false && m_keyboardState.IsKeyDown(Keys.LeftControl) == false))
             {
                 //Camera follows current stone
                 m_cameraLookAt = m_stones[m_stoneIdCamera].getPosition();

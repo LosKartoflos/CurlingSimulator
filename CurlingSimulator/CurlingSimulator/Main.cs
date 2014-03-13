@@ -45,6 +45,7 @@ namespace CurlingSimulator
 
         // Point Counter
         int m_pointCounter;
+        int m_score;
 
         // Models
         // Stones
@@ -155,6 +156,7 @@ namespace CurlingSimulator
             m_previousGameTime = new GameTime();
 
             m_pointCounter = 0;
+            m_score = 0;
 
             m_cameraLookAt = new Vector3(0, 0, 0);
             base.Initialize();
@@ -262,8 +264,16 @@ namespace CurlingSimulator
                     {
                         for (int i = 1; i < m_numberOfStones; ++i)
                         {
+                            //Count this Rounds Score
+                            Vector3 currentStone = m_stones[i].getPosition();
+                            // Mittels Pythagoras Abstand zwischen aktuellem Stein und Zielpunkt(0,3,-400) berechnen, Zielradius ist 21
+                            if (Math.Sqrt(Math.Pow(currentStone.X - 0, 2) + Math.Pow(currentStone.Z + 400, 2)) < 21)
+                                m_pointCounter++;
+                            
                             m_stones[i].setPosition(m_zeroPosition);
                         }
+                        m_score = m_pointCounter;
+                        m_pointCounter = 0;
                     }
                 }
 
@@ -583,8 +593,9 @@ namespace CurlingSimulator
         private void DrawFonts(GameTime GameTime)
         {
             m_spriteBatch.Begin();
-            string outputString = m_pointCounter.ToString();
-            m_spriteBatch.DrawString(spriteFont, outputString, new Vector2(10, 10), Color.Black);
+            m_spriteBatch.DrawString(spriteFont, "Last Rounds Score:" , new Vector2(10, 10), Color.Black);
+            string outputString = m_score.ToString();
+            m_spriteBatch.DrawString(spriteFont, outputString, new Vector2(10, 30), Color.Black);
             m_spriteBatch.End();
         }
     }

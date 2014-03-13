@@ -62,6 +62,7 @@ namespace CurlingSimulator
         Vector3 m_cameraPositionOffset;
         Vector3 m_cameraPositionOffsetField;
         Vector3 m_cameraLookAt;
+        Vector3 m_cameraLookAtOffsetField;
         int m_stoneIdCamera;
 
         //Soundeffekte
@@ -97,7 +98,8 @@ namespace CurlingSimulator
             m_keyboardState = Keyboard.GetState();
             //Camera
             m_cameraPositionOffset = new Vector3(0.0f, 20.0f, 40.0f);
-            m_cameraPositionOffsetField = new Vector3(0.0f, 50.0f, 10.0f);
+            m_cameraPositionOffsetField = new Vector3(.0f, 130.0f, 16.5f);
+            m_cameraLookAtOffsetField = new Vector3(0f, 0, 16.0f);
             m_cameraPosition = m_cameraPositionOffset;
             m_stoneIdCamera = 0;
             //IceFloor
@@ -297,7 +299,7 @@ namespace CurlingSimulator
             //if STRG is pressed you look at the end of the Field
             if(m_keyboardState.IsKeyDown(Keys.LeftControl) == true)
             {
-                m_cameraLookAt = m_iceFloorPos;
+                m_cameraLookAt = m_iceFloorPos + m_cameraLookAtOffsetField;
                 m_cameraPosition = m_iceFloorPos + m_cameraPositionOffsetField;
             }
             else if (m_idCurrentStone >= 0 || m_keyboardState.IsKeyDown(Keys.LeftAlt) == true)

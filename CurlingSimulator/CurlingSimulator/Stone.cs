@@ -17,10 +17,10 @@ namespace CurlingSimulator
     {
         Vector3 m_position;
         Model m_model;
-        double m_vX, m_vY;
-        double m_diameter;
+        float m_vX, m_vY;
+        float m_diameter;
 
-        public CStone(Model model, int x, int y, int z)
+        public CStone(Model model, float x, float y, float z)
         {
             m_model = model;
             m_position.X = x;
@@ -28,25 +28,29 @@ namespace CurlingSimulator
             m_position.Z = z;
             m_vX = 0;
             m_vY = 0;
-            m_diameter = 22;
+            m_diameter = 3;
         }
 
-        public void setVx(double vX)
+        public void setVx(float vX)
         {
+            if (Math.Abs(vX) < 0.001)
+                vX = 0;
             m_vX = vX;
         }
 
-        public double getVx()
+        public float getVx()
         {
             return m_vX;
         }
 
-        public void setVy(double vY)
+        public void setVy(float vY)
         {
+            if (vY > -0.001)
+                vY = 0;
             m_vY = vY;
         }
 
-        public double getVy()
+        public float getVy()
         {
             return m_vY;
         }
@@ -69,8 +73,8 @@ namespace CurlingSimulator
 
         public void applyResistance()
         {
-            m_vY *= 0.9;
-            m_vX *= 0.9;
+            setVy(m_vY * 0.99f);
+            setVx(m_vX * 0.99f);
         }
 
         public void checkCollisionWith(CStone other)
@@ -85,8 +89,14 @@ namespace CurlingSimulator
 
         public void applyCollision(CStone other)
         {
-            other.setVy(this.m_vY);
-            this.m_vY = 0;
+            float a = m_diameter * (float)Math.Tan(Math.Atan(m_vX/m_vY) - Math.Asin(Math.Abs(other.getPosition().X - m_position.X)/m_diameter));
+            float vOtherTotal = (1 - a / m_diameter) * (float)Math.Sqrt(m_vX * m_vX + m_vY * m_vY);
+            float otherNewVx = other.getVx() + vOtherTotal * (other.getPosition().X - m_position.X) / (other.getPosition().Z - m_position.Z) / (float)Math.Sqrt(2) + m_vX;
+            other.setVx(otherNewVx);
+            float otherNewVy = other.getVy() + (float)Math.Sqrt(vOtherTotal * vOtherTotal - other.getVx() * other.getVx());
+            other.setVy(-otherNewVy);
+            m_vY = 0;
+            m_vX = 0;
         }
     }
 

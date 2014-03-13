@@ -221,144 +221,139 @@ namespace CurlingSimulator
 
         protected override void Update(GameTime gameTime)
         {
+            
+            GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
             // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            if (gamePadState.Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            // Check if any stone is moving
-            bool somethingMoving = false;
-            for (int i = 0; i < m_numberOfStones; i++)
+
+            if ((gameTime.TotalGameTime - m_previousGameTime.TotalGameTime).Milliseconds >= 10)
             {
-                m_stones[i].setPosition(m_stones[i].getPosition() + new Vector3(0, 0, (int)m_stones[i].getVy()));
-                if ((int)m_stones[i].getVy() != 0 || (int)m_stones[i].getVx() != 0)
+                // Check if any stone is moving
+                bool somethingMoving = false;
+                for (int i = 0; i < m_numberOfStones; i++)
                 {
-                    somethingMoving = true;
-                    // Check if colliding with other stone
-                    for (int j = 0; j < m_numberOfStones; j++)
+                    m_stones[i].setPosition(m_stones[i].getPosition() + new Vector3(0, 0, m_stones[i].getVy()));
+                    if (m_stones[i].getVy() <= -0.001f || m_stones[i].getVx() >= 0.001f)
                     {
-                        if (j != i)
+                        somethingMoving = true;
+                        // Check if colliding with other stone
+                        for (int j = 0; j < m_numberOfStones; j++)
                         {
-                            m_stones[i].checkCollisionWith(m_stones[j]);
+                            if (j != i)
+                            {
+                                m_stones[i].checkCollisionWith(m_stones[j]);
+                            }
                         }
                     }
                 }
-            }
-            if (!somethingMoving && m_wasMoving)
-            {
-                m_powerBar.setZero();
-                m_moveSlider = true;
-                int nextId = m_idCurrentStone + 1;
-
-                if (nextId == m_numberOfStones)
-                    nextId = 0;
-                m_stoneIdCamera = nextId;
-                m_stones[nextId].setPosition(m_startPosition);
-                if (nextId == 0)
+                if (!somethingMoving && m_wasMoving)
                 {
-                    for (int i = 1; i < m_numberOfStones; ++i)
+                    m_powerBar.setZero();
+                    m_moveSlider = true;
+                    int nextId = m_idCurrentStone + 1;
+
+                    if (nextId == m_numberOfStones)
+                        nextId = 0;
+                    m_stoneIdCamera = nextId;
+                    m_stones[nextId].setPosition(m_startPosition);
+                    if (nextId == 0)
+                    {
+                        for (int i = 1; i < m_numberOfStones; ++i)
+                        {
+                            m_stones[i].setPosition(m_zeroPosition);
+                        }
+                    }
+                }
+
+                // Shoot new stone
+                m_wasMoving = somethingMoving;
+                bool spaceWasDown = m_keyboardState.IsKeyDown(Keys.Space);
+                m_keyboardState = Keyboard.GetState();
+                if (((spaceWasDown && m_keyboardState.IsKeyUp(Keys.Space)) || gamePadState.Buttons.A == ButtonState.Pressed) && !somethingMoving)
+                {
+                    m_idCurrentStone++;
+                    if (m_idCurrentStone == m_numberOfStones)
+                        m_idCurrentStone = 0;
+                    float speed = m_powerBar.getValue() * -1;
+                    if (speed <= 0.001)
+                    {
+                        m_stones[m_idCurrentStone].setVy(speed);
+                        float div = m_diversion.getValue() * speed * -0.3f;
+                        m_stones[m_idCurrentStone].setVx(div);
+                    }
+                    if (speed <= 0.001)
+                        m_moveSlider = false;
+                    m_diversion.setZero();
+
+                    // Loop Sound "02_Mitte"
+                    //soundMitteLoop = soundMitte.CreateInstance();
+                    //soundMitteLoop.IsLooped = true;
+                    //soundMitteLoop.Play();
+
+                    // Sound "02_Mitte"
+                    soundMitte.Play();
+                }
+
+                // Reset stones if every stone was played and stopped moving
+                bool bNoMoreStones = true;
+                for (int i = 0; i < m_numberOfStones; ++i)
+                {
+                    if ((m_stones[i].getPosition() == m_zeroPosition || m_stones[i].getPosition() == m_startPosition) || Math.Abs(m_stones[i].getVx()) > 0.001f || m_stones[i].getVy() < -0.001f)
+                    {
+                        bNoMoreStones = false;
+                        break;
+                    }
+                }
+                if (bNoMoreStones)
+                {
+                    for (int i = 0; i < m_numberOfStones; ++i)
                     {
                         m_stones[i].setPosition(m_zeroPosition);
                     }
+                    int nextId = m_idCurrentStone + 1;
+                    if (nextId == m_numberOfStones)
+                        nextId = 0;
+                    m_stones[nextId].setPosition(m_startPosition);
                 }
-            }
 
-            // Shoot new stone
-            m_wasMoving = somethingMoving;
-            bool spaceWasDown = m_keyboardState.IsKeyDown(Keys.Space);
-            m_keyboardState = Keyboard.GetState();
-            if (spaceWasDown && m_keyboardState.IsKeyUp(Keys.Space) && !somethingMoving)
-            {
-                m_idCurrentStone++;
-                if (m_idCurrentStone == m_numberOfStones)
-                    m_idCurrentStone = 0;
-                double speed = m_powerBar.getValue() * -100 / 3 - 2;
-                m_stones[m_idCurrentStone].setVy(speed);
-                double div = m_diversion.getValue() * speed * (-0.3);
-                m_stones[m_idCurrentStone].setVx(div);
-                if ((int)speed != 0)
-                    m_moveSlider = false;
-
-                // Loop Sound "02_Mitte"
-                //soundMitteLoop = soundMitte.CreateInstance();
-                //soundMitteLoop.IsLooped = true;
-                //soundMitteLoop.Play();
-
-                // Sound "02_Mitte"
-                soundMitte.Play();
-            }
-
-            // Reset stones if every stone was played and stopped moving
-            bool bNoMoreStones = true;
-            for (int i = 0; i < m_numberOfStones; ++i)
-            {
-                if ((m_stones[i].getPosition() == m_zeroPosition || m_stones[i].getPosition() == m_startPosition) || (int)m_stones[i].getVx() != 0 || (int)m_stones[i].getVy() != 0)
+                //Count the Points
+                if (bNoMoreStones)
                 {
-                    bNoMoreStones = false;
-                    break;
+                    for (int i = 0; i < m_numberOfStones; ++i)
+                    {
+                        Vector3 currentStone = m_stones[i].getPosition();
+                        Vector3 floorPosition = m_iceFloor.getPosition();
+                        if (Math.Pow(currentStone.X - floorPosition.X, 2) + Math.Pow(currentStone.Z - floorPosition.Z, 2) < 20)
+                            m_pointCounter++;
+                    }
                 }
-            }
-            if (bNoMoreStones)
-            {
-                for (int i = 0; i < m_numberOfStones; ++i)
-                {
-                    m_stones[i].setPosition(m_zeroPosition);
-                }
-                int nextId = m_idCurrentStone + 1;
-                if (nextId == m_numberOfStones)
-                    nextId = 0;
-                m_stones[nextId].setPosition(m_startPosition);
-            }
 
-            //Count the Points
-            if (bNoMoreStones)
-            {
-                for (int i = 0; i < m_numberOfStones; ++i)
-                {
-                    Vector3 currentStone = m_stones[i].getPosition();
-                    Vector3 floorPosition = m_iceFloor.getPosition();
-                    if (Math.Pow(currentStone.X - floorPosition.X, 2) + Math.Pow(currentStone.Z - floorPosition.Z, 2) < 20)
-                        m_pointCounter++;
-                }
-            }
+                //Makes the Modelrotating
+                m_stoneRotation += (float)gameTime.ElapsedGameTime.TotalMilliseconds *
+                MathHelper.ToRadians(0.1f);
 
-            //Makes the Modelrotating
-            m_stoneRotation += (float)gameTime.ElapsedGameTime.TotalMilliseconds *
-            MathHelper.ToRadians(0.1f);
-
-
-            // Update Powerbar
-            if ((gameTime.TotalGameTime - m_previousGameTime.TotalGameTime).Milliseconds >= 10)
-            {
                 if (m_moveSlider)
                     m_powerBar.update();
-            }
 
-            // Update Diversion
-            if (m_keyboardState.IsKeyDown(Keys.Left))
-                m_diversion.moveLeft();
+                // Update Diversion
+                if (m_keyboardState.IsKeyDown(Keys.Left))
+                    m_diversion.moveLeft();
 
-            if (m_keyboardState.IsKeyDown(Keys.Right))
-                m_diversion.moveRight();
+                if (m_keyboardState.IsKeyDown(Keys.Right))
+                    m_diversion.moveRight();
 
-
-            if ((gameTime.TotalGameTime - m_previousGameTime.TotalGameTime).Milliseconds >= 15)
-            {
 
                 // Apply Resistance
                 for (int i = 0; i < m_numberOfStones; i++)
                 {
-                    m_stones[i].setPosition(m_stones[i].getPosition() + new Vector3((int)m_stones[i].getVx(), 0, (int)m_stones[i].getVy()));
-                    if (m_stones[i].getVy() != 0 || m_stones[i].getVx() != 0)
+                    m_stones[i].setPosition(m_stones[i].getPosition() + new Vector3(m_stones[i].getVx(), 0, m_stones[i].getVy()));
+                    if (m_stones[i].getVy() < -0.001f || m_stones[i].getVx() > 0.001f)
                     {
                         m_stones[i].applyResistance();
                     }
-                }
-
-                m_previousGameTime = new GameTime(gameTime.TotalRealTime, gameTime.ElapsedGameTime, gameTime.TotalGameTime, gameTime.ElapsedGameTime);
-            }
-
-
-           
+                }           
 
             //Watches values
             Console.WriteLine("m_cameraPostion, x: " + m_cameraPosition.X + " y: " + m_cameraPosition.Y + " z: " + m_cameraPosition.Z);
@@ -387,8 +382,6 @@ namespace CurlingSimulator
                 s = true;
                 c = false;
             }
-
-            GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
 
             if (gamePadState.IsConnected)
             {
@@ -432,27 +425,6 @@ namespace CurlingSimulator
                 //if (gamePadState.Buttons.RightShoulder == ButtonState.Pressed)
                   //  m_diversion.moveRight();
 
-            
-
-
-                if (gamePadState.Buttons.A == ButtonState.Pressed && !somethingMoving) //Hit Stone 
-                {
-                    m_wasMoving = somethingMoving;
-                    //bool spaceWasDown = m_keyboardState.IsKeyDown(Keys.Space);
-                    //m_keyboardState = Keyboard.GetState();
-                    //if (spaceWasDown && m_keyboardState.IsKeyUp(Keys.Space) && !somethingMoving)
-                    //{
-                    m_idCurrentStone++;
-                    if (m_idCurrentStone == 6)
-                        m_idCurrentStone = 0;
-                    double speed = m_powerBar.getValue() * -100 / 3;
-                    m_stones[m_idCurrentStone].setVy(speed);
-                    double div = m_diversion.getValue() * 10;
-                    m_stones[m_idCurrentStone].setVx(div);
-                    if ((int)speed != 0)
-                        m_moveSlider = false;
-                    // }
-                }
 
                 //if STRG is pressed you look at the end of the Field
                 if ((m_keyboardState.IsKeyDown(Keys.LeftControl) == true) || gamePadState.Buttons.RightShoulder == ButtonState.Pressed)
@@ -493,8 +465,10 @@ namespace CurlingSimulator
                     m_cameraPosition = m_stones[m_stoneIdCamera].getPosition() + m_cameraPositionOffset;
                 }
             */
-                base.Update(gameTime);
+                m_previousGameTime = new GameTime(gameTime.TotalRealTime, gameTime.ElapsedGameTime, gameTime.TotalGameTime, gameTime.ElapsedGameTime);
             }
+                base.Update(gameTime);
+        }
         
 
         protected override void Draw(GameTime gameTime)

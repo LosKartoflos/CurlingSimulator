@@ -61,6 +61,7 @@ namespace CurlingSimulator
         Vector3 m_cameraPosition;
         Vector3 m_cameraPositionOffset;
         Vector3 m_cameraLookAt;
+        int m_stoneIdCamera;
 
         //Soundeffekte
         SoundEffect soundAnfang;
@@ -93,11 +94,15 @@ namespace CurlingSimulator
         protected override void Initialize()
         {
             m_keyboardState = Keyboard.GetState();
+            //Camera
             m_cameraPositionOffset = new Vector3(0.0f, 20.0f, 40.0f);
             m_cameraPosition = m_cameraPositionOffset;
+            m_stoneIdCamera = 0;
+            //IceFloor
             m_iceFloorRotation = 0.0f;
             m_iceFloorPos = new Vector3(0, -3, -400);
             m_iceFloorScale = 1;
+            //Stone
             m_numberOfStones =8;
             m_stoneRotation = 0.0f;
             m_stoneScale = 1;
@@ -189,6 +194,7 @@ namespace CurlingSimulator
                 m_powerBar.setZero();
                 m_moveSlider = true;
                 int nextId = m_idCurrentStone + 1;
+                m_stoneIdCamera = nextId;
                 if (nextId == m_numberOfStones)
                     nextId = 0;
                 m_stones[nextId].setPosition(m_startPosition);
@@ -287,9 +293,9 @@ namespace CurlingSimulator
             if (m_idCurrentStone >= 0)
             {
                 //Camera follows current stone
-                m_cameraLookAt = m_stones[m_idCurrentStone].getPosition();
+                m_cameraLookAt = m_stones[m_stoneIdCamera].getPosition();
                 //m_cameraPosition = m_stones[m_idCurrentStone].getPosition();
-                m_cameraPosition = m_stones[m_idCurrentStone].getPosition() + m_cameraPositionOffset;
+                m_cameraPosition = m_stones[m_stoneIdCamera].getPosition() + m_cameraPositionOffset;
             }
 
             //Watches values

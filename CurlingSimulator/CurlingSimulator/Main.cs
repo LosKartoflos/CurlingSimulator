@@ -230,14 +230,14 @@ namespace CurlingSimulator
                 this.Exit();
 
 
-            if ((gameTime.TotalGameTime - m_previousGameTime.TotalGameTime).Milliseconds >= 10)
+            if ((gameTime.TotalGameTime - m_previousGameTime.TotalGameTime).Milliseconds >= 20)
             {
                 // Check if any stone is moving
                 bool somethingMoving = false;
                 for (int i = 0; i < m_numberOfStones; i++)
                 {
                     m_stones[i].setPosition(m_stones[i].getPosition() + new Vector3(0, 0, m_stones[i].getVy()));
-                    if (m_stones[i].getVy() <= -0.001f || m_stones[i].getVx() >= 0.001f)
+                    if (m_stones[i].getVy() <= -0.011f || m_stones[i].getVx() >= 0.011f)
                     {
                         somethingMoving = true;
                         // Check if colliding with other stone
@@ -245,7 +245,8 @@ namespace CurlingSimulator
                         {
                             if (j != i)
                             {
-                                m_stones[i].checkCollisionWith(m_stones[j]);
+                                if (m_stones[i].checkCollisionWith(m_stones[j]))
+                                    break;
                             }
                         }
                     }
@@ -287,13 +288,13 @@ namespace CurlingSimulator
                     if (m_idCurrentStone == m_numberOfStones)
                         m_idCurrentStone = 0;
                     float speed = m_powerBar.getValue() * -4.05f;
-                    if (speed <= 0.001)
+                    if (speed <= 0.011)
                     {
                         m_stones[m_idCurrentStone].setVy(speed);
                         float div = m_diversion.getValue() * speed * -0.3f;
                         m_stones[m_idCurrentStone].setVx(div);
                     }
-                    if (speed <= 0.001)
+                    if (speed <= 0.011)
                         m_moveSlider = false;
                     m_diversion.setZero();
 
@@ -310,7 +311,7 @@ namespace CurlingSimulator
                 bool bNoMoreStones = true;
                 for (int i = 0; i < m_numberOfStones; ++i)
                 {
-                    if ((m_stones[i].getPosition() == m_zeroPosition || m_stones[i].getPosition() == m_startPosition) || Math.Abs(m_stones[i].getVx()) > 0.001f || m_stones[i].getVy() < -0.001f)
+                    if ((m_stones[i].getPosition() == m_zeroPosition || m_stones[i].getPosition() == m_startPosition) || Math.Abs(m_stones[i].getVx()) > 0.011f || m_stones[i].getVy() < -0.011f)
                     {
                         bNoMoreStones = false;
                         break;
@@ -359,7 +360,7 @@ namespace CurlingSimulator
                 for (int i = 0; i < m_numberOfStones; i++)
                 {
                     m_stones[i].setPosition(m_stones[i].getPosition() + new Vector3(m_stones[i].getVx(), 0, m_stones[i].getVy()));
-                    if (m_stones[i].getVy() < -0.001f || m_stones[i].getVx() > 0.001f)
+                    if (m_stones[i].getVy() < -0.011f || m_stones[i].getVx() > 0.011f)
                     {
                         m_stones[i].applyResistance();
                     }

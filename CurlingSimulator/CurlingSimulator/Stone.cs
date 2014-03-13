@@ -33,7 +33,7 @@ namespace CurlingSimulator
 
         public void setVx(float vX)
         {
-            if (Math.Abs(vX) < 0.001)
+            if (Math.Abs(vX) < 0.011)
                 vX = 0;
             m_vX = vX;
         }
@@ -45,7 +45,7 @@ namespace CurlingSimulator
 
         public void setVy(float vY)
         {
-            if (vY > -0.001)
+            if (vY > -0.011)
                 vY = 0;
             m_vY = vY;
         }
@@ -77,24 +77,27 @@ namespace CurlingSimulator
             setVx(m_vX * 0.99f);
         }
 
-        public void checkCollisionWith(CStone other)
+        public bool checkCollisionWith(CStone other)
         {
             double dX = this.getPosition().X - other.getPosition().X;
             double dY = this.getPosition().Z - other.getPosition().Z;
-            if (Math.Sqrt(dX * dX + dY * dY) <= m_diameter)
+            if (Math.Sqrt(dX * dX + dY * dY) < m_diameter)
             {
                 applyCollision(other);
+                return true;
             }
+            return false;
         }
 
         public void applyCollision(CStone other)
         {
             float a = m_diameter * (float)Math.Tan(Math.Atan(m_vX/m_vY) - Math.Asin(Math.Abs(other.getPosition().X - m_position.X)/m_diameter));
-            float vOtherTotal = (1 - a / m_diameter) * (float)Math.Sqrt(m_vX * m_vX + m_vY * m_vY);
+            float vOtherTotal = (1 - Math.Abs(a) / m_diameter) * (float)Math.Sqrt(m_vX * m_vX + m_vY * m_vY);
             float otherNewVx = other.getVx() + vOtherTotal * (other.getPosition().X - m_position.X) / (other.getPosition().Z - m_position.Z) / (float)Math.Sqrt(2) + m_vX;
-            other.setVx(otherNewVx);
+            other.setVx(-otherNewVx);
             float otherNewVy = other.getVy() + (float)Math.Sqrt(vOtherTotal * vOtherTotal - other.getVx() * other.getVx());
             other.setVy(-otherNewVy);
+            other.setPosition(other.getPosition() + new Vector3(other.getVx(), 0, other.getVy()));
             m_vY = 0;
             m_vX = 0;
         }

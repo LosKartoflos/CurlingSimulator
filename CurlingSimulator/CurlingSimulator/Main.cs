@@ -93,11 +93,11 @@ namespace CurlingSimulator
         protected override void Initialize()
         {
             m_keyboardState = Keyboard.GetState();
-            m_cameraPositionOffset = new Vector3(0.0f, 20.0f, 60.0f);
+            m_cameraPositionOffset = new Vector3(0.0f, 20.0f, 40.0f);
             m_cameraPosition = m_cameraPositionOffset;
             m_iceFloorRotation = 0.0f;
-            m_iceFloorPos = new Vector3(0, -3, -30);
-            m_iceFloorScale = 10;
+            m_iceFloorPos = new Vector3(0, -3, -400);
+            m_iceFloorScale = 1;
             m_numberOfStones =8;
             m_stoneRotation = 0.0f;
             m_stoneScale = 1;
@@ -127,10 +127,10 @@ namespace CurlingSimulator
             m_stones = new CStone[m_numberOfStones];
             for (int i = 0; i < m_numberOfStones; ++i)
             {
-                m_stones[i] = new CStone(Content.Load<Model>("Models\\Curlingstein"), 0, 0, 500);
+                m_stones[i] = new CStone(Content.Load<Model>("Models\\CurlingsteinRed"), 0, 0, 500);
             }
             m_stones[0].setPosition(m_startPosition);
-                m_iceFloor = new Floor(Content.Load<Model>("Models\\EisFlaeche7"), 0, 0, 0);
+                m_iceFloor = new Floor(Content.Load<Model>("Models\\EisFlaeche10"), 0, 0, 0);
 
 
             //sets the Aspect Ratio
@@ -304,12 +304,14 @@ namespace CurlingSimulator
         {
             GraphicsDevice.Clear(Color.White);
 
+            DrawFloor();
+            DrawStone();
+
             m_spriteBatch.Begin(SpriteBlendMode.AlphaBlend);//start drawing 2D IMages
             m_powerBar.draw(m_spriteBatch);
             m_diversion.draw(m_spriteBatch);
             m_spriteBatch.End();
-            DrawFloor();
-            DrawStone();
+           
 
             
 

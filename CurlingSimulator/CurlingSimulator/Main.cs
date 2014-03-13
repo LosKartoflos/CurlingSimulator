@@ -60,6 +60,7 @@ namespace CurlingSimulator
         // Camera
         Vector3 m_cameraPosition;
         Vector3 m_cameraPositionOffset;
+        Vector3 m_cameraPositionOffsetField;
         Vector3 m_cameraLookAt;
         int m_stoneIdCamera;
 
@@ -96,6 +97,7 @@ namespace CurlingSimulator
             m_keyboardState = Keyboard.GetState();
             //Camera
             m_cameraPositionOffset = new Vector3(0.0f, 20.0f, 40.0f);
+            m_cameraPositionOffsetField = new Vector3(0.0f, 50.0f, 10.0f);
             m_cameraPosition = m_cameraPositionOffset;
             m_stoneIdCamera = 0;
             //IceFloor
@@ -194,9 +196,10 @@ namespace CurlingSimulator
                 m_powerBar.setZero();
                 m_moveSlider = true;
                 int nextId = m_idCurrentStone + 1;
-                m_stoneIdCamera = nextId;
+               
                 if (nextId == m_numberOfStones)
                     nextId = 0;
+                m_stoneIdCamera = nextId;
                 m_stones[nextId].setPosition(m_startPosition);
                 if (nextId == 0)
                 {
@@ -290,7 +293,14 @@ namespace CurlingSimulator
                 m_previousGameTime = new GameTime(gameTime.TotalRealTime, gameTime.ElapsedGameTime, gameTime.TotalGameTime, gameTime.ElapsedGameTime);
             }
 
-            if (m_idCurrentStone >= 0)
+
+            //if STRG is pressed you look at the end of the Field
+            if(m_keyboardState.IsKeyDown(Keys.LeftControl) == true)
+            {
+                m_cameraLookAt = m_iceFloorPos;
+                m_cameraPosition = m_iceFloorPos + m_cameraPositionOffsetField;
+            }
+            else if (m_idCurrentStone >= 0 || m_keyboardState.IsKeyDown(Keys.LeftAlt) == true)
             {
                 //Camera follows current stone
                 m_cameraLookAt = m_stones[m_stoneIdCamera].getPosition();

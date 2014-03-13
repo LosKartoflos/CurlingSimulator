@@ -63,6 +63,8 @@ namespace CurlingSimulator
         float m_iceFloorScale;
         float m_iceFloorRotation;
 
+        //Arrow
+
         // Camera
         Vector3 m_cameraPosition;
         Vector3 m_cameraPositionOffset;
@@ -99,9 +101,14 @@ namespace CurlingSimulator
         //Startscreen
         bool s; //Play
         bool c; //Control
-        Texture2D ControlStartscreen; 
+        Texture2D ControlStartscreen;
 
+        //Controller Connection
+        Texture2D Connected;
+        Texture2D Disconnected;
+        bool v; //Connected Anzeige
 
+        GamePadState gamePadState; 
 
         public Main()
         {
@@ -116,7 +123,9 @@ namespace CurlingSimulator
 
         protected override void Initialize()
         {
+            gamePadState = GamePad.GetState(PlayerIndex.One);
 
+            v = false; //connected anzeige
             s = true; //Startscreen, Play
             c = false; //Startscreen, Control
 
@@ -133,7 +142,7 @@ namespace CurlingSimulator
             m_stoneIdCamera = 0;
             //IceFloor
             m_iceFloorRotation = 0.0f;
-            m_iceFloorPos = new Vector3(0, -3, -400);
+            m_iceFloorPos = new Vector3(0.0f, 0.5f, -400.0f);
             m_iceFloorScale = 1;
             //Stone
             m_numberOfStones =8;
@@ -161,6 +170,8 @@ namespace CurlingSimulator
 
             //Startscreen_Control
             ControlStartscreen = Content.Load<Texture2D>("Control_Startscreen");
+            Connected = Content.Load<Texture2D>("Connected");
+            Disconnected = Content.Load<Texture2D>("Disconnected");
 
             // Create a new SpriteBatch, which can be used to draw textures.
             m_spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -237,7 +248,7 @@ namespace CurlingSimulator
                 m_powerBar.setZero();
                 m_moveSlider = true;
                 int nextId = m_idCurrentStone + 1;
-               
+
                 if (nextId == m_numberOfStones)
                     nextId = 0;
                 m_stoneIdCamera = nextId;
@@ -280,7 +291,7 @@ namespace CurlingSimulator
             bool bNoMoreStones = true;
             for (int i = 0; i < m_numberOfStones; ++i)
             {
-                if ((m_stones[i].getPosition() == m_zeroPosition  || m_stones[i].getPosition() == m_startPosition)|| (int)m_stones[i].getVx() != 0 || (int)m_stones[i].getVy() != 0)
+                if ((m_stones[i].getPosition() == m_zeroPosition || m_stones[i].getPosition() == m_startPosition) || (int)m_stones[i].getVx() != 0 || (int)m_stones[i].getVy() != 0)
                 {
                     bNoMoreStones = false;
                     break;
@@ -328,8 +339,8 @@ namespace CurlingSimulator
 
             if (m_keyboardState.IsKeyDown(Keys.Right))
                 m_diversion.moveRight();
-            
-            
+
+
             if ((gameTime.TotalGameTime - m_previousGameTime.TotalGameTime).Milliseconds >= 15)
             {
 
@@ -347,25 +358,7 @@ namespace CurlingSimulator
             }
 
 
-            //if STRG is pressed you look at the end of the Field
-            if(m_keyboardState.IsKeyDown(Keys.LeftControl) == true)
-            {
-                m_cameraLookAt = m_iceFloorPos + m_cameraLookAtOffsetField;
-                m_cameraPosition = m_iceFloorPos + m_cameraPositionOffsetField;
-            }
-            //if Alt is pressed you look at the whole Field
-            else if (m_keyboardState.IsKeyDown(Keys.LeftAlt) == true)
-            {
-                m_cameraLookAt = m_cameraLookAtAllField;
-                m_cameraPosition = m_cameraPositionAllField;
-            }
-            else if (m_idCurrentStone >= 0 || (m_keyboardState.IsKeyDown(Keys.LeftAlt) == false && m_keyboardState.IsKeyDown(Keys.LeftControl) == false))
-            {
-                //Camera follows current stone
-                m_cameraLookAt = m_stones[m_stoneIdCamera].getPosition();
-                //m_cameraPosition = m_stones[m_idCurrentStone].getPosition();
-                m_cameraPosition = m_stones[m_stoneIdCamera].getPosition() + m_cameraPositionOffset;
-            }
+           
 
             //Watches values
             Console.WriteLine("m_cameraPostion, x: " + m_cameraPosition.X + " y: " + m_cameraPosition.Y + " z: " + m_cameraPosition.Z);
@@ -395,8 +388,114 @@ namespace CurlingSimulator
                 c = false;
             }
 
-            base.Update(gameTime);
-        }
+            GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
+
+            if (gamePadState.IsConnected)
+            {
+                v = true;
+
+            }
+            else
+            {
+                v = false;
+            }
+
+                if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+                    this.Exit(); // Exit Game
+
+                if (gamePadState.Buttons.X == ButtonState.Pressed) //control gamepad
+                {
+                    c = true;
+                    s = false;
+                }
+
+                if (gamePadState.Buttons.B == ButtonState.Pressed) //go back gamepad
+                {
+                    s = true;
+                    c = false;
+                }
+
+                if (gamePadState.Buttons.Y == ButtonState.Pressed) //Play gamepad
+                {
+                    s = false;
+                    vidplayer.Stop();
+                    // Loop Sound "07_SoundTrackSport" (Hintergrundmusik)
+
+                    soundTrackSportsLoop = soundSoundTrackSports.CreateInstance();
+                    soundTrackSportsLoop.IsLooped = true;
+                    soundTrackSportsLoop.Play();
+                }
+
+                //if (gamePadState.Buttons.LeftShoulder == ButtonState.Pressed)
+                  //  m_diversion.moveLeft();
+
+                //if (gamePadState.Buttons.RightShoulder == ButtonState.Pressed)
+                  //  m_diversion.moveRight();
+
+            
+
+
+                if (gamePadState.Buttons.A == ButtonState.Pressed && !somethingMoving) //Hit Stone 
+                {
+                    m_wasMoving = somethingMoving;
+                    //bool spaceWasDown = m_keyboardState.IsKeyDown(Keys.Space);
+                    //m_keyboardState = Keyboard.GetState();
+                    //if (spaceWasDown && m_keyboardState.IsKeyUp(Keys.Space) && !somethingMoving)
+                    //{
+                    m_idCurrentStone++;
+                    if (m_idCurrentStone == 6)
+                        m_idCurrentStone = 0;
+                    double speed = m_powerBar.getValue() * -100 / 3;
+                    m_stones[m_idCurrentStone].setVy(speed);
+                    double div = m_diversion.getValue() * 10;
+                    m_stones[m_idCurrentStone].setVx(div);
+                    if ((int)speed != 0)
+                        m_moveSlider = false;
+                    // }
+                }
+
+                //if STRG is pressed you look at the end of the Field
+                if ((m_keyboardState.IsKeyDown(Keys.LeftControl) == true) || gamePadState.Buttons.RightShoulder == ButtonState.Pressed)
+                {
+                    m_cameraLookAt = m_iceFloorPos + m_cameraLookAtOffsetField;
+                    m_cameraPosition = m_iceFloorPos + m_cameraPositionOffsetField;
+                }
+                //if Alt is pressed you look at the whole Field
+                else if ((m_keyboardState.IsKeyDown(Keys.LeftAlt) == true) || gamePadState.Buttons.LeftShoulder == ButtonState.Pressed)
+                {
+                    m_cameraLookAt = m_cameraLookAtAllField;
+                    m_cameraPosition = m_cameraPositionAllField;
+                }
+                else if (m_idCurrentStone >= 0 || (m_keyboardState.IsKeyDown(Keys.LeftAlt) == false && m_keyboardState.IsKeyDown(Keys.LeftControl) == false && gamePadState.Buttons.RightShoulder != ButtonState.Pressed && gamePadState.Buttons.LeftShoulder != ButtonState.Pressed))
+                {
+                    //Camera follows current stone
+                    m_cameraLookAt = m_stones[m_stoneIdCamera].getPosition();
+                    //m_cameraPosition = m_stones[m_idCurrentStone].getPosition();
+                    m_cameraPosition = m_stones[m_stoneIdCamera].getPosition() + m_cameraPositionOffset;
+                }
+
+               /* if (gamePadState.Buttons.RightShoulder == ButtonState.Pressed)
+                {
+                    m_cameraLookAt = m_iceFloorPos + m_cameraLookAtOffsetField;
+                    m_cameraPosition = m_iceFloorPos + m_cameraPositionOffsetField;
+                }
+                //if Alt is pressed you look at the whole Field
+                else if (gamePadState.Buttons.LeftShoulder == ButtonState.Pressed)
+                {
+                    m_cameraLookAt = m_cameraLookAtAllField;
+                    m_cameraPosition = m_cameraPositionAllField;
+                }
+                else if (m_idCurrentStone >= 0 || (gamePadState.Buttons.LeftShoulder == ButtonState.Pressed) == false && (gamePadState.Buttons.RightShoulder == ButtonState.Pressed == false))
+                {
+                    //Camera follows current stone
+                    m_cameraLookAt = m_stones[m_stoneIdCamera].getPosition();
+                    //m_cameraPosition = m_stones[m_idCurrentStone].getPosition();
+                    m_cameraPosition = m_stones[m_stoneIdCamera].getPosition() + m_cameraPositionOffset;
+                }
+            */
+                base.Update(gameTime);
+            }
+        
 
         protected override void Draw(GameTime gameTime)
         {
@@ -426,7 +525,19 @@ namespace CurlingSimulator
             }
 
             DrawFonts(gameTime);
+            if (v == true)
+            {
 
+                m_spriteBatch.Begin();
+                m_spriteBatch.Draw(Connected, new Vector2(764, 52), Color.White);
+                m_spriteBatch.End();
+            }
+            else
+            {
+                m_spriteBatch.Begin();
+                m_spriteBatch.Draw(Disconnected, new Vector2(764, 52), Color.White);
+                m_spriteBatch.End();
+            }
             base.Draw(gameTime);
         }
 

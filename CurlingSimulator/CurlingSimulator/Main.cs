@@ -284,6 +284,7 @@ namespace CurlingSimulator
                         nextId = 0;
                     m_stoneIdCamera = nextId;
                     m_stones[nextId].setPosition(m_startPosition);
+                    m_arrowPos = new Vector3(0.0f, 1.0f, 0.0f);
                     if (nextId == 0)
                     {
                         for (int i = 1; i < m_numberOfStones; ++i)
@@ -481,6 +482,23 @@ namespace CurlingSimulator
                     //m_cameraPosition = m_stones[m_idCurrentStone].getPosition();
                     m_cameraPosition = m_stones[m_stoneIdCamera].getPosition() + m_cameraPositionOffset;
                 }
+
+                Vector3 up;
+                Vector3 down;
+
+                /*if ((m_keyboardState.IsKeyDown(Keys.Up) || (gamePadState.DPad.Up == ButtonState.Pressed)) && !somethingMoving)
+                {
+                    up = new Vector3(0.5f, 0.0f, 0.0f);
+                    m_stones[0].setPosition(m_stones[m_stoneIdCamera].getPosition() + up);
+                    m_arrowPos = m_arrowPos + up;
+                }
+
+                if ((m_keyboardState.IsKeyDown(Keys.Down) || (gamePadState.DPad.Down == ButtonState.Pressed)) && !somethingMoving)
+                {
+                    down = new Vector3(-0.5f, 0.0f, 0.0f);
+                    m_stones[0].setPosition(m_stones[m_stoneIdCamera].getPosition() + down);
+                    m_arrowPos = m_arrowPos + down;
+                }*/
 
                /* if (gamePadState.Buttons.RightShoulder == ButtonState.Pressed)
                 {

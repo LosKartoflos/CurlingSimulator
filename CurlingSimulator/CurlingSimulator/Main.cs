@@ -87,6 +87,19 @@ namespace CurlingSimulator
         //SoundEffectInstance soundMitteLoop;
         SoundEffectInstance soundTrackSportsLoop;
 
+        //Videos
+        Video vid;
+        VideoPlayer vidplayer;
+
+        Texture2D vidTexture;
+        Rectangle vidRectangle;
+
+        //Startscreen
+        bool s; //Play
+        bool c; //Control
+        Texture2D ControlStartscreen; 
+
+
 
         public Main()
         {
@@ -101,6 +114,12 @@ namespace CurlingSimulator
 
         protected override void Initialize()
         {
+
+            s = true; //Startscreen, Play
+            c = false; //Startscreen, Control
+
+            vidplayer = new VideoPlayer();
+
             m_keyboardState = Keyboard.GetState();
             //Camera
             m_cameraPositionOffset = new Vector3(0.0f, 20.0f, 40.0f);
@@ -130,6 +149,15 @@ namespace CurlingSimulator
 
         protected override void LoadContent()
         {
+
+            // Load Video
+            vid = Content.Load<Video>("StartScreen");
+            vidRectangle = new Rectangle(GraphicsDevice.Viewport.X - 138, GraphicsDevice.Viewport.Y, GraphicsDevice.Viewport.Width + 280, GraphicsDevice.Viewport.Height);
+            vidplayer.Play(vid);
+
+            //Startscreen_Control
+            ControlStartscreen = Content.Load<Texture2D>("Control_Startscreen");
+
             // Create a new SpriteBatch, which can be used to draw textures.
             m_spriteBatch = new SpriteBatch(GraphicsDevice);
 
@@ -168,10 +196,7 @@ namespace CurlingSimulator
             soundSubmarine = Content.Load<SoundEffect>("Sounds\\10_Submarine");
             soundIce = Content.Load<SoundEffect>("Sounds\\11_Ice");
 
-            // Loop Sound "07_SoundTrackSport" (Hintergrundmusik)
-            soundTrackSportsLoop = soundSoundTrackSports.CreateInstance();
-            soundTrackSportsLoop.IsLooped = true;
-            soundTrackSportsLoop.Play();
+           
         }
 
         protected override void UnloadContent()
@@ -336,6 +361,29 @@ namespace CurlingSimulator
             Console.WriteLine("m_cameraPostion, x: " + m_cameraPosition.X + " y: " + m_cameraPosition.Y + " z: " + m_cameraPosition.Z);
             //Console.WriteLine("m_stonePostion, x: " + m_stones[m_idCurrentStone].getPosition().X + " y: " + m_stones[m_idCurrentStone].getPosition().Y + " z: " + m_stones[m_idCurrentStone].getPosition().Z);
 
+            if (m_keyboardState.IsKeyDown(Keys.P))
+            {
+                s = false;
+                vidplayer.Stop();
+                // Loop Sound "07_SoundTrackSport" (Hintergrundmusik)
+
+                soundTrackSportsLoop = soundSoundTrackSports.CreateInstance();
+                soundTrackSportsLoop.IsLooped = true;
+                soundTrackSportsLoop.Play();
+
+            }
+
+            if (m_keyboardState.IsKeyDown(Keys.C))
+            {
+                c = true;
+                s = false;
+            }
+
+            if (m_keyboardState.IsKeyDown(Keys.Escape))
+            {
+                s = true;
+                c = false;
+            }
 
             base.Update(gameTime);
         }
@@ -351,7 +399,21 @@ namespace CurlingSimulator
             m_powerBar.draw(m_spriteBatch);
             m_diversion.draw(m_spriteBatch);
             m_spriteBatch.End();
-           
+
+            if (s == true)
+            {
+                vidTexture = vidplayer.GetTexture();
+                m_spriteBatch.Begin();
+                m_spriteBatch.Draw(vidTexture, vidRectangle, Color.White);
+                m_spriteBatch.End();
+            }
+
+            if (c == true)
+            {
+                m_spriteBatch.Begin();
+                m_spriteBatch.Draw(ControlStartscreen, new Vector2(0, 0), Color.White);
+                m_spriteBatch.End();
+            }
 
             
 

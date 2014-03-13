@@ -21,6 +21,9 @@ namespace CurlingSimulator
         public const int SCREENWIDTH = 800;
         public const int SCREENHEIGHT = 600; 
         
+        // Sprite Font
+        private SpriteFont spriteFont;
+        
         // Graphic draw stuff
         GraphicsDeviceManager m_graphics;
         SpriteBatch m_spriteBatch;
@@ -129,6 +132,8 @@ namespace CurlingSimulator
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             m_spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            spriteFont = Content.Load<SpriteFont>("MyFont");
 
             m_powerBar = new CPowerBar(Content.Load<Texture2D>("powerbar_full"), new Vector2(20, 450));
             m_powerBar.setSlider(Content.Load<Texture2D>("powerbar_slider"));

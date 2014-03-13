@@ -130,7 +130,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <Compile Include="TestTexture.jpg">
       <Name>TestTexture</Name>
       <Importer>TextureImporter</Importer>
@@ -145,16 +144,11 @@
     </Compile>
     <Compile Include="Models\CurlingsteinRed.fbx">
       <Name>CurlingsteinRed</Name>
-=======
-    <Compile Include="Models\EisFlaeche7.fbx">
-      <Name>EisFlaeche7</Name>
->>>>>>> 26ec5df... Kamera verfolgt und EisFläche hat flasche Textur geht aber wieder
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <Compile Include="Marble.jpg">
       <Name>Marble</Name>
       <Importer>TextureImporter</Importer>
@@ -178,12 +172,62 @@
   <ItemGroup>
     <Compile Include="Models\Eis.jpg">
       <Name>Eis</Name>
-=======
-    <Compile Include="TestTexture.jpg">
-      <Name>TestTexture</Name>
->>>>>>> 26ec5df... Kamera verfolgt und EisFläche hat flasche Textur geht aber wieder
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Models\CurlingsteinRed.fbx">
+      <Name>CurlingsteinRed</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Marble.jpg">
+      <Name>Marble</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\EisFlaeche10.fbx">
+      <Name>EisFlaeche10</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Eis.jpg">
+      <Name>Eis</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\Eis.jpg">
+      <Name>Eis</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+<<<<<<< HEAD
+    <Compile Include="MyFont.spritefont">
+      <Name>MyFont</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+=======
+    <Compile Include="StartScreen.wmv">
+      <Name>StartScreen</Name>
+      <Importer>WmvImporter</Importer>
+      <Processor>VideoProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Control_Startscreen.jpg">
+      <Name>Control_Startscreen</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+>>>>>>> 8f1c0d2... Startscreen und Co sind implementiert
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

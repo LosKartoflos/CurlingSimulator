@@ -415,7 +415,7 @@ namespace CurlingSimulator
                 m_spriteBatch.End();
             }
 
-            
+            DrawFonts(gameTime);
 
             base.Draw(gameTime);
         }
@@ -483,6 +483,14 @@ namespace CurlingSimulator
                 mesh.Draw();
      
             }
+        }
+
+        private void DrawFonts(GameTime GameTime)
+        {
+            m_spriteBatch.Begin();
+            string outputString = m_pointCounter.ToString();
+            m_spriteBatch.DrawString(spriteFont, outputString, new Vector2(10, 10), Color.Black);
+            m_spriteBatch.End();
         }
     }
 }

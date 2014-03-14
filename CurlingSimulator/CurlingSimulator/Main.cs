@@ -47,6 +47,9 @@ namespace CurlingSimulator
         int m_pointCounter;
         int m_score;
 
+        // Stone Counter
+        int m_stoneCounter;
+
         // Models
         // Stones
         int m_numberOfStones;
@@ -176,6 +179,8 @@ namespace CurlingSimulator
             m_pointCounter = 0;
             m_score = 0;
 
+            m_stoneCounter = 0;
+
             m_cameraLookAt = new Vector3(0, 0, 0);
             base.Initialize();
         }
@@ -246,6 +251,7 @@ namespace CurlingSimulator
 
         protected override void Update(GameTime gameTime)
         {
+            m_stoneCounter = m_numberOfStones - m_stoneIdCamera - 1;
             
             GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
             // Allows the game to exit
@@ -674,11 +680,10 @@ namespace CurlingSimulator
         private void DrawFonts(GameTime GameTime)
         {
             m_spriteBatch.Begin();
-            m_spriteBatch.DrawString(spriteFont, "Score Last Round:" , new Vector2(10, 10), Color.Black);
             string outputString = m_score.ToString();
+            m_spriteBatch.DrawString(spriteFont, "Score Last Round:", new Vector2(10, 10), Color.Black);
             m_spriteBatch.DrawString(spriteFont, outputString, new Vector2(10, 30), Color.Black);
-            int stoneCounter = m_numberOfStones - m_idCurrentStone - 1;
-            string stones = stoneCounter.ToString();
+            string stones = m_stoneCounter.ToString();
             m_spriteBatch.DrawString(spriteFont, "Remaining Stones:", new Vector2(585, 570), Color.Black);
             m_spriteBatch.DrawString(spriteFont, stones, new Vector2(775, 570), Color.Black);
             m_spriteBatch.End();

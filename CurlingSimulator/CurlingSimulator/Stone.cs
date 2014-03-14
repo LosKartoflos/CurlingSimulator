@@ -33,7 +33,7 @@ namespace CurlingSimulator
 
         public void setVx(float vX)
         {
-            if (Math.Abs(vX) < 0.011)
+            if (Math.Abs(vX) < 0.0025)
                 vX = 0;
             m_vX = vX;
         }
@@ -45,7 +45,7 @@ namespace CurlingSimulator
 
         public void setVy(float vY)
         {
-            if (vY > -0.011)
+            if (vY > -0.025)
                 vY = 0;
             m_vY = vY;
         }
@@ -91,11 +91,14 @@ namespace CurlingSimulator
 
         public void applyCollision(CStone other)
         {
-            float a = m_diameter * (float)Math.Tan(Math.Atan(m_vX/m_vY) - Math.Asin(Math.Abs(other.getPosition().X - m_position.X)/m_diameter));
-            float vOtherTotal = (1 - Math.Abs(a) / m_diameter) * (float)Math.Sqrt(m_vX * m_vX + m_vY * m_vY);
-            float otherNewVx = other.getVx() + vOtherTotal * (other.getPosition().X - m_position.X) / (other.getPosition().Z - m_position.Z) / (float)Math.Sqrt(2) + m_vX;
+            float a = m_diameter * (float)Math.Tan(Math.Atan(m_vX/Math.Abs(m_vY)) - Math.Asin(Math.Abs(other.getPosition().X - m_position.X)/m_diameter));
+            if (a > m_diameter)
+                return;
+            float vOtherTotal = (1 - (Math.Abs(a) / m_diameter)) * (float)Math.Sqrt((m_vX * m_vX) + (m_vY * m_vY));
+            float temp = (((other.getPosition().X - m_position.X) / (other.getPosition().Z - m_position.Z)) / (float)Math.Sqrt(2));
+            float otherNewVx = vOtherTotal * temp;
             other.setVx(-otherNewVx);
-            float otherNewVy = other.getVy() + (float)Math.Sqrt(vOtherTotal * vOtherTotal - other.getVx() * other.getVx());
+            float otherNewVy = other.getVy() + (float)Math.Sqrt((vOtherTotal * vOtherTotal) - (other.getVx() * other.getVx()));
             other.setVy(-otherNewVy);
             other.setPosition(other.getPosition() + new Vector3(other.getVx(), 0, other.getVy()));
             m_vY = 0;

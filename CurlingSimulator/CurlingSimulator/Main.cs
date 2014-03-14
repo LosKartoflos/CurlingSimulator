@@ -60,6 +60,7 @@ namespace CurlingSimulator
         float m_stoneScale;
         Vector3 m_zeroPosition;
         Vector3 m_startPosition;
+        bool m_wasCollision;
 
         // Floor
         Floor m_iceFloor;
@@ -214,7 +215,7 @@ namespace CurlingSimulator
             m_stones = new CStone[m_numberOfStones];
             for (int i = 0; i < m_numberOfStones; ++i)
             {
-                m_stones[i] = new CStone(Content.Load<Model>("Models\\CurlingsteinRed"), 0, 0, 500);
+                m_stones[i] = new CStone(Content.Load<Model>("Models\\CurlingsteinRed"), 0f, 0f, 500f);
             }
             m_stones[0].setPosition(m_startPosition);
                 
@@ -265,18 +266,25 @@ namespace CurlingSimulator
                 bool somethingMoving = false;
                 for (int i = 0; i < m_numberOfStones; i++)
                 {
-                    m_stones[i].setPosition(m_stones[i].getPosition() + new Vector3(0, 0, m_stones[i].getVy()));
-                    if (m_stones[i].getVy() <= -0.011f || m_stones[i].getVx() >= 0.011f)
+                    if (m_stones[i].getVy() <= -0.025f || m_stones[i].getVx() >= 0.0025f)
                     {
                         somethingMoving = true;
-                        // Check if colliding with other stone
-                        for (int j = 0; j < m_numberOfStones; j++)
+                        if (!m_wasCollision)
                         {
-                            if (j != i)
+                            // Check if colliding with other stone
+                            for (int j = 0; j < m_numberOfStones; j++)
                             {
-                                if (m_stones[i].checkCollisionWith(m_stones[j]))
-                                    break;
+                                if (j != i)
+                                {
+                                    m_wasCollision = m_stones[i].checkCollisionWith(m_stones[j]);
+                                    if (m_wasCollision)
+                                        break;
+                                }
                             }
+                        }
+                        else
+                        {
+                            m_wasCollision = false;
                         }
                     }
                 }
@@ -317,14 +325,14 @@ namespace CurlingSimulator
                     m_idCurrentStone++;
                     if (m_idCurrentStone == m_numberOfStones)
                         m_idCurrentStone = 0;
-                    float speed = m_powerBar.getValue() * -4.05f;
-                    if (speed <= 0.011)
+                    float speed = m_powerBar.getValue() * -8.1f;
+                    if (speed <= 0.025)
                     {
                         m_stones[m_idCurrentStone].setVy(speed);
-                        float div = m_diversion.getValue() * speed * -0.3f;
+                        float div = m_diversion.getValue() * speed * -0.05f;
                         m_stones[m_idCurrentStone].setVx(div);
                     }
-                    if (speed <= 0.011)
+                    if (speed <= 0.025)
                         m_moveSlider = false;
                     m_diversion.setZero();
 
@@ -360,7 +368,7 @@ namespace CurlingSimulator
                 for (int i = 0; i < m_numberOfStones; i++)
                 {
                     m_stones[i].setPosition(m_stones[i].getPosition() + new Vector3(m_stones[i].getVx(), 0, m_stones[i].getVy()));
-                    if (m_stones[i].getVy() < -0.011f || m_stones[i].getVx() > 0.011f)
+                    if (m_stones[i].getVy() < -0.025f || m_stones[i].getVx() > 0.0025f)
                     {
                         m_stones[i].applyResistance();
                     }

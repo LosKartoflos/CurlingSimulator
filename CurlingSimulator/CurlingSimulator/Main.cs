@@ -403,6 +403,31 @@ namespace CurlingSimulator
             {
                 v = false;
             }
+            Console.WriteLine("m_stonePos.Y: " + m_stones[m_stoneIdCamera].getPosition().Z);
+            //Resets if stone is outside of the field. (Places the stone somewhere else and sets the speed to zero)
+
+            for (int i = 0; i < 8; i++)
+            {
+                if (m_stones[i].getPosition().X > 23.5 || m_stones[i].getPosition().X < -23.5 || m_stones[i].getPosition().Z < -440.0)
+                {
+                    m_stones[i].setPosition(new Vector3(100.0f, 0.0f, 0.0f));
+
+                    m_stones[i].setVx(0.0f);
+                    m_stones[i].setVy(0.0f);
+
+
+                }
+                if (m_stones[i].getPosition().Z > -333.0 && m_stones[i].getVx() == 0.0f && m_stones[i].getVy() == 0.0f && m_stones[i].getPosition().Z < 0.0)
+                {
+                    m_stones[i].setPosition(new Vector3(100.0f, 0.0f, 0.0f));
+
+                    m_stones[i].setVx(0.0f);
+                    m_stones[i].setVy(0.0f);
+
+
+                }
+            }
+
 
                 if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                     this.Exit(); // Exit Game

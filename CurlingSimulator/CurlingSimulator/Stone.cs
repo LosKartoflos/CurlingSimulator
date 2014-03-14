@@ -101,8 +101,8 @@ namespace CurlingSimulator
             float otherNewVy = other.getVy() + (float)Math.Sqrt((vOtherTotal * vOtherTotal) - (other.getVx() * other.getVx()));
             other.setVy(-otherNewVy);
             other.setPosition(other.getPosition() + new Vector3(other.getVx(), 0, other.getVy()));
-            m_vY = 0;
-            m_vX = 0;
+            m_vY = m_vY - other.getVy();
+            m_vX = other.getVx() * - 1;
         }
     }
 

@@ -331,39 +331,7 @@ namespace CurlingSimulator
                     soundMitte.Play();
                 }
 
-                // Reset stones if every stone was played and stopped moving
-                bool bNoMoreStones = true;
-                for (int i = 0; i < m_numberOfStones; ++i)
-                {
-                    if ((m_stones[i].getPosition() == m_zeroPosition || m_stones[i].getPosition() == m_startPosition) || Math.Abs(m_stones[i].getVx()) > 0.011f || m_stones[i].getVy() < -0.011f)
-                    {
-                        bNoMoreStones = false;
-                        break;
-                    }
-                }
-                if (bNoMoreStones)
-                {
-                    for (int i = 0; i < m_numberOfStones; ++i)
-                    {
-                        m_stones[i].setPosition(m_zeroPosition);
-                    }
-                    int nextId = m_idCurrentStone + 1;
-                    if (nextId == m_numberOfStones)
-                        nextId = 0;
-                    m_stones[nextId].setPosition(m_startPosition);
-                }
-
-                //Count the Points
-                if (bNoMoreStones)
-                {
-                    for (int i = 0; i < m_numberOfStones; ++i)
-                    {
-                        Vector3 currentStone = m_stones[i].getPosition();
-                        // Mittels Pythagoras Abstand zwischen aktuellem Stein und Zielpunkt(0,3,-400) berechnen, Zielradius ist 21
-                        if (Math.Sqrt(Math.Pow(currentStone.X - 0, 2) + Math.Pow(currentStone.Z + 400, 2)) < 21)
-                            m_pointCounter++;
-                    }
-                }
+               
 
                 //Makes the Modelrotating
                 m_stoneRotation += (float)gameTime.ElapsedGameTime.TotalMilliseconds *
@@ -538,7 +506,6 @@ namespace CurlingSimulator
 
             m_spriteBatch.Begin(SpriteBlendMode.AlphaBlend);//start drawing 2D IMages
             m_powerBar.draw(m_spriteBatch);
-            m_diversion.draw(m_spriteBatch);
             m_spriteBatch.End();
 
             if (s == true)
@@ -707,9 +674,13 @@ namespace CurlingSimulator
         private void DrawFonts(GameTime GameTime)
         {
             m_spriteBatch.Begin();
-            m_spriteBatch.DrawString(spriteFont, "Last Rounds Score:" , new Vector2(10, 10), Color.Black);
+            m_spriteBatch.DrawString(spriteFont, "Score Last Round:" , new Vector2(10, 10), Color.Black);
             string outputString = m_score.ToString();
             m_spriteBatch.DrawString(spriteFont, outputString, new Vector2(10, 30), Color.Black);
+            int stoneCounter = m_numberOfStones - m_idCurrentStone - 1;
+            string stones = stoneCounter.ToString();
+            m_spriteBatch.DrawString(spriteFont, "Remaining Stones:", new Vector2(585, 570), Color.Black);
+            m_spriteBatch.DrawString(spriteFont, stones, new Vector2(775, 570), Color.Black);
             m_spriteBatch.End();
         }
     }

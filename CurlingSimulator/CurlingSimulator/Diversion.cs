@@ -50,11 +50,6 @@ namespace CurlingSimulator
             else
                 return (m_sliderZero.X - m_sliderPos.X) / 40 * (-1);
         }
-
-        public void draw(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(m_slider, m_sliderPos, null, Color.White, 0, m_pos, 1.0f, SpriteEffects.None, 0.0f);
-        }
   
         public void moveLeft()
         {

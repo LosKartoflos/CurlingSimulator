@@ -19,11 +19,11 @@ namespace CurlingSimulator
     public class Main : Microsoft.Xna.Framework.Game
     {
         public const int SCREENWIDTH = 800;
-        public const int SCREENHEIGHT = 600; 
-        
+        public const int SCREENHEIGHT = 600;
+
         // Sprite Font
         private SpriteFont spriteFont;
-        
+
         // Graphic draw stuff
         GraphicsDeviceManager m_graphics;
         SpriteBatch m_spriteBatch;
@@ -60,7 +60,6 @@ namespace CurlingSimulator
         float m_stoneScale;
         Vector3 m_zeroPosition;
         Vector3 m_startPosition;
-        bool m_wasCollision;
 
         // Floor
         Floor m_iceFloor;
@@ -123,19 +122,13 @@ namespace CurlingSimulator
         Texture2D Disconnected;
         bool v; //Connected Anzeige
 
+        GamePadState gamePadState;
+
         //Endscreen
         Texture2D ScoreBeat;
         Texture2D ScoreFail;
 
-        //vibration
-       // bool vbr;
-        GameTime tvbr;
-        //bool m_isVibrating;
-
         int scfa;
-
-
-        GamePadState gamePadState; 
 
         public Main()
         {
@@ -155,10 +148,6 @@ namespace CurlingSimulator
             v = false; //connected anzeige
             s = true; //Startscreen, Play
             c = false; //Startscreen, Control
-          //  m_isVibrating = false;
-           // tvbr = new GameTime();
-           //vbr = false; 
-
 
             vidplayer = new VideoPlayer();
 
@@ -169,7 +158,7 @@ namespace CurlingSimulator
             m_cameraLookAtOffsetField = new Vector3(0f, 0, 16.0f);
             m_cameraPosition = m_cameraPositionOffset;
             m_cameraPositionAllField = new Vector3(0.0f, 130.0f, 85.0f);
-            m_cameraLookAtAllField = new Vector3(0.0f, 30.0f,-50.0f);
+            m_cameraLookAtAllField = new Vector3(0.0f, 30.0f, -50.0f);
             m_stoneIdCamera = 0;
             //IceFloor
             m_iceFloorRotation = 0.0f;
@@ -184,7 +173,7 @@ namespace CurlingSimulator
             m_hallRotation = 0.0f;
             m_hallScale = 1;
             //Stone
-            m_numberOfStones =8;
+            m_numberOfStones = 8;
             m_stoneRotation = 0.0f;
             m_stoneScale = 1;
             m_idCurrentStone = -1;
@@ -215,7 +204,6 @@ namespace CurlingSimulator
             ScoreFail = Content.Load<Texture2D>("ScoreFail");
 
 
-
             //Startscreen_Control
             ControlStartscreen = Content.Load<Texture2D>("Control_Startscreen");
             Connected = Content.Load<Texture2D>("Connected");
@@ -237,10 +225,10 @@ namespace CurlingSimulator
             m_stones = new CStone[m_numberOfStones];
             for (int i = 0; i < m_numberOfStones; ++i)
             {
-                m_stones[i] = new CStone(Content.Load<Model>("Models\\CurlingsteinRed"), 0f, 0f, 500f);
+                m_stones[i] = new CStone(Content.Load<Model>("Models\\CurlingsteinRed"), 0, 0, 500);
             }
             m_stones[0].setPosition(m_startPosition);
-                
+
             m_iceFloor = new Floor(Content.Load<Model>("Models\\EisFlaeche10"), 0, 0, 0);
 
             m_arrow = new Arrow(Content.Load<Model>("Models\\Arrow"), 0, 0, 0);
@@ -264,7 +252,7 @@ namespace CurlingSimulator
             soundSubmarine = Content.Load<SoundEffect>("Sounds\\10_Submarine");
             soundIce = Content.Load<SoundEffect>("Sounds\\11_Ice");
 
-           
+
         }
 
         protected override void UnloadContent()
@@ -288,113 +276,93 @@ namespace CurlingSimulator
                 bool somethingMoving = false;
                 for (int i = 0; i < m_numberOfStones; i++)
                 {
-                    if (m_stones[i].getVy() <= -0.025f || m_stones[i].getVx() >= 0.0025f)
+                    m_stones[i].setPosition(m_stones[i].getPosition() + new Vector3(0, 0, m_stones[i].getVy()));
+                    if (m_stones[i].getVy() <= -0.011f || m_stones[i].getVx() >= 0.011f)
                     {
                         somethingMoving = true;
-                        if (!m_wasCollision)
+                        // Check if colliding with other stone
+                        for (int j = 0; j < m_numberOfStones; j++)
                         {
-                            // Check if colliding with other stone
-                            for (int j = 0; j < m_numberOfStones; j++)
+                            if (j != i)
                             {
-                                if (j != i)
-                                {
-                                    m_wasCollision = m_stones[i].checkCollisionWith(m_stones[j]);
-                                        break;
-                                }
+                                if (m_stones[i].checkCollisionWith(m_stones[j]))
+
+                                    break;
                             }
-                        }
-                                      soundEnde.Play();
-                                      vbr = false;
-                                      m_isVibrating = true;
-                                  }
-
-                                  if (m_isVibrating == true)
-                                  {
-                                      float duration = (float)(gameTime.TotalGameTime - tvbr.TotalGameTime).Milliseconds;
-                                      if (duration > 680.0f)
-                                      {
-                                          GamePad.SetVibration(PlayerIndex.One, 0.0f, 0.0f);
-                                          m_isVibrating = false;
-                                      }
-                                  } */
-
-                    if (!somethingMoving && m_wasMoving)
-                    {
-                        m_powerBar.setZero();
-                        m_moveSlider = true;
-                        int nextId = m_idCurrentStone + 1;
-
-                        if (nextId == m_numberOfStones)
-                            nextId = 0;
-                        m_stoneIdCamera = nextId;
-                        m_stones[nextId].setPosition(m_startPosition);
-                        m_arrowPos = new Vector3(0.0f, 1.0f, 0.0f);
-                        if (nextId == 0)
-                        {
-                            for ( i = 1; i < m_numberOfStones; ++i)
-                            {
-                                //Count this Rounds Score
-                                Vector3 currentStone = m_stones[i].getPosition();
-                                // Mittels Pythagoras Abstand zwischen aktuellem Stein und Zielpunkt(0,3,-400) berechnen, Zielradius ist 21
-                                if (Math.Sqrt(Math.Pow(currentStone.X - 0, 2) + Math.Pow(currentStone.Z + 400, 2)) < 21)
-                                    m_pointCounter++;
-
-                                m_stones[i].setPosition(m_zeroPosition);
-                            }
-                            m_score = m_pointCounter;
-                            if (m_score >= 4)
-                            { scfa = 1; }
-                            if (m_score < 4)
-                            { scfa = 2; }
-                            m_pointCounter = 0;
-
-                            m_pointCounter = 0;
                         }
                     }
+                }
+                if (!somethingMoving && m_wasMoving)
+                {
+                    m_powerBar.setZero();
+                    m_moveSlider = true;
+                    int nextId = m_idCurrentStone + 1;
 
-                    // Shoot new stone
-                    m_wasMoving = somethingMoving;
-                    bool spaceWasDown = m_keyboardState.IsKeyDown(Keys.Space);
-                    m_keyboardState = Keyboard.GetState();
-                    if (((spaceWasDown && m_keyboardState.IsKeyUp(Keys.Space)) || gamePadState.Buttons.A == ButtonState.Pressed) && !somethingMoving)
+                    if (nextId == m_numberOfStones)
+                        nextId = 0;
+                    m_stoneIdCamera = nextId;
+                    m_stones[nextId].setPosition(m_startPosition);
+                    m_arrowPos = new Vector3(0.0f, 1.0f, 0.0f);
+                    if (nextId == 0)
                     {
-                        m_idCurrentStone++;
-                        if (m_idCurrentStone == m_numberOfStones)
-                            m_idCurrentStone = 0;
+                        for (int i = 1; i < m_numberOfStones; ++i)
+                        {
+                            //Count this Rounds Score
+                            Vector3 currentStone = m_stones[i].getPosition();
+                            // Mittels Pythagoras Abstand zwischen aktuellem Stein und Zielpunkt(0,3,-400) berechnen, Zielradius ist 21
+                            if (Math.Sqrt(Math.Pow(currentStone.X - 0, 2) + Math.Pow(currentStone.Z + 400, 2)) < 21)
+                                m_pointCounter++;
+
+                            m_stones[i].setPosition(m_zeroPosition);
+                        }
+                        m_score = m_pointCounter;
+                        if (m_score >= 4)
+                        { scfa = 1; }
+                        if (m_score < 4)
+                        { scfa = 2; }
+                        m_pointCounter = 0;
+                        m_pointCounter = 0;
+                    }
+                }
+
+                // Shoot new stone
+                m_wasMoving = somethingMoving;
+                bool spaceWasDown = m_keyboardState.IsKeyDown(Keys.Space);
+                m_keyboardState = Keyboard.GetState();
+                if (((spaceWasDown && m_keyboardState.IsKeyUp(Keys.Space)) || gamePadState.Buttons.A == ButtonState.Pressed) && !somethingMoving)
+                {
+                    m_idCurrentStone++;
+                    if (m_idCurrentStone == m_numberOfStones)
+                        m_idCurrentStone = 0;
                     float speed = m_powerBar.getValue() * -4.05f;
                     if (speed <= 0.011)
-                        {
-                            m_stones[m_idCurrentStone].setVy(speed);
+                    {
+                        m_stones[m_idCurrentStone].setVy(speed);
                         float div = m_diversion.getValue() * speed * -0.3f;
-                            m_stones[m_idCurrentStone].setVx(div);
-                        }
-                    if (speed <= 0.011)
-                            m_moveSlider = false;
-                        m_diversion.setZero();
-
-                        // Loop Sound "02_Mitte"
-                        //soundMitteLoop = soundMitte.CreateInstance();
-                        //soundMitteLoop.IsLooped = true;
-                        //soundMitteLoop.Play();
-
-                        // Sound "02_Mitte"
-                        soundMitte.Play();
+                        m_stones[m_idCurrentStone].setVx(div);
                     }
+                    if (speed <= 0.011)
+                        m_moveSlider = false;
+                    m_diversion.setZero();
+
+                    // Loop Sound "02_Mitte"
+                    //soundMitteLoop = soundMitte.CreateInstance();
+                    //soundMitteLoop.IsLooped = true;
+                    //soundMitteLoop.Play();
+
+                    // Sound "02_Mitte"
+                    soundMitte.Play();
+                }
 
 
 
-                    //Makes the Modelrotating
+                //Makes the Modelrotating
                 m_stoneRotation += (float)gameTime.ElapsedGameTime.TotalMilliseconds *
                 MathHelper.ToRadians(0.1f);
 
-                    if (m_moveSlider)
-                        m_powerBar.update();
+                if (m_moveSlider)
+                    m_powerBar.update();
 
-                    // Update Diversion
-                    if (m_keyboardState.IsKeyDown(Keys.Left) || (gamePadState.DPad.Left == ButtonState.Pressed))
-                        m_diversion.moveLeft();
-                    if (m_keyboardState.IsKeyDown(Keys.Right) || (gamePadState.DPad.Right == ButtonState.Pressed))
-                        m_diversion.moveRight();
                 // Update Diversion
                 if (m_keyboardState.IsKeyDown(Keys.Left))
                     m_diversion.moveLeft();
@@ -402,193 +370,179 @@ namespace CurlingSimulator
                 if (m_keyboardState.IsKeyDown(Keys.Right))
                     m_diversion.moveRight();
 
-                    m_arrowRotation = m_diversion.getValue() * -0.158f;
+                m_arrowRotation = m_diversion.getValue() * -0.158f;
 
 
-                    // Apply Resistance
-                    for ( i = 0; i < m_numberOfStones; i++)
-                    {
-                        m_stones[i].setPosition(m_stones[i].getPosition() + new Vector3(m_stones[i].getVx(), 0, m_stones[i].getVy()));
+                // Apply Resistance
+                for (int i = 0; i < m_numberOfStones; i++)
+                {
+                    m_stones[i].setPosition(m_stones[i].getPosition() + new Vector3(m_stones[i].getVx(), 0, m_stones[i].getVy()));
                     if (m_stones[i].getVy() < -0.011f || m_stones[i].getVx() > 0.011f)
-                        {
-                        m_stones[i].setRotation((float)gameTime.ElapsedGameTime.TotalMilliseconds * MathHelper.ToRadians(0.1f));
-                            m_stones[i].applyResistance();
-                        }
-                    }
-
-                    //Watches values
-                    Console.WriteLine("m_cameraPostion, x: " + m_cameraPosition.X + " y: " + m_cameraPosition.Y + " z: " + m_cameraPosition.Z);
-                    //Console.WriteLine("m_stonePostion, x: " + m_stones[m_idCurrentStone].getPosition().X + " y: " + m_stones[m_idCurrentStone].getPosition().Y + " z: " + m_stones[m_idCurrentStone].getPosition().Z);
-
-                    if (m_keyboardState.IsKeyDown(Keys.P))
                     {
-                        s = false;
-                        vidplayer.Stop();
-                        // Loop Sound "07_SoundTrackSport" (Hintergrundmusik)
-
-                        soundTrackSportsLoop = soundSoundTrackSports.CreateInstance();
-                        soundTrackSportsLoop.IsLooped = true;
-                        soundTrackSportsLoop.Play();
-
+                        m_stones[i].applyResistance();
                     }
+                }
 
-                    if (m_keyboardState.IsKeyDown(Keys.C))
+                //Watches values
+                Console.WriteLine("m_cameraPostion, x: " + m_cameraPosition.X + " y: " + m_cameraPosition.Y + " z: " + m_cameraPosition.Z);
+                //Console.WriteLine("m_stonePostion, x: " + m_stones[m_idCurrentStone].getPosition().X + " y: " + m_stones[m_idCurrentStone].getPosition().Y + " z: " + m_stones[m_idCurrentStone].getPosition().Z);
+
+                if (m_keyboardState.IsKeyDown(Keys.P))
+                {
+                    s = false;
+                    vidplayer.Stop();
+                    // Loop Sound "07_SoundTrackSport" (Hintergrundmusik)
+
+                    soundTrackSportsLoop = soundSoundTrackSports.CreateInstance();
+                    soundTrackSportsLoop.IsLooped = true;
+                    soundTrackSportsLoop.Play();
+
+                }
+
+                if (m_keyboardState.IsKeyDown(Keys.C))
+                {
+                    c = true;
+                    s = false;
+                }
+
+                if (m_keyboardState.IsKeyDown(Keys.Escape))
+                {
+                    s = true;
+                    c = false;
+                    scfa = 0;
+                }
+
+                if (gamePadState.IsConnected)
+                {
+                    v = true;
+
+                }
+                else
+                {
+                    v = false;
+                }
+                Console.WriteLine("m_stonePos.Y: " + m_stones[m_stoneIdCamera].getPosition().Z);
+                //Resets if stone is outside of the field. (Places the stone somewhere else and sets the speed to zero)
+
+                for (int i = 0; i < 8; i++)
+                {
+                    if (m_stones[i].getPosition().X > 23.5 || m_stones[i].getPosition().X < -23.5 || m_stones[i].getPosition().Z < -440.0)
                     {
-                        c = true;
-                        s = false;
-                    }
+                        m_stones[i].setPosition(new Vector3(100.0f, 0.0f, 0.0f));
 
-                    if (m_keyboardState.IsKeyDown(Keys.Escape))
+                        m_stones[i].setVx(0.0f);
+                        m_stones[i].setVy(0.0f);
+
+
+                    }
+                    if (m_stones[i].getPosition().Z > -333.0 && m_stones[i].getVx() == 0.0f && m_stones[i].getVy() == 0.0f && m_stones[i].getPosition().Z < 0.0)
                     {
-                        s = true;
-                        c = false;
-                        scfa = 0;
-                    }
+                        m_stones[i].setPosition(new Vector3(100.0f, 0.0f, 0.0f));
 
-                    if (gamePadState.IsConnected)
-                    {
-                        v = true;
+                        m_stones[i].setVx(0.0f);
+                        m_stones[i].setVy(0.0f);
+
 
                     }
-                    else
-                    {
-                        v = false;
-                    }
-                    Console.WriteLine("m_stonePos.Y: " + m_stones[m_stoneIdCamera].getPosition().Z);
-                    //Resets if stone is outside of the field. (Places the stone somewhere else and sets the speed to zero)
-
-                    for ( i = 0; i < 8; i++)
-                    {
-                        if (m_stones[i].getPosition().X > 23.5 || m_stones[i].getPosition().X < -23.5 || m_stones[i].getPosition().Z < -440.0)
-                        {
-                            m_stones[i].setPosition(new Vector3(100.0f, 0.0f, 0.0f));
-
-                            m_stones[i].setVx(0.0f);
-                            m_stones[i].setVy(0.0f);
-
-
-                        }
-                        if (m_stones[i].getPosition().Z > -333.0 && m_stones[i].getVx() == 0.0f && m_stones[i].getVy() == 0.0f && m_stones[i].getPosition().Z < 0.0)
-                        {
-                            m_stones[i].setPosition(new Vector3(100.0f, 0.0f, 0.0f));
-
-                            m_stones[i].setVx(0.0f);
-                            m_stones[i].setVy(0.0f);
-
-
-                        }
-                    }
-
-
-                    if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-                        this.Exit(); // Exit Game
-
-                    if (gamePadState.Buttons.X == ButtonState.Pressed) //control gamepad
-                    {
-                        c = true;
-                        s = false;
-                    }
-
-                    if (gamePadState.Buttons.B == ButtonState.Pressed) //go back gamepad
-                    {
-                        s = true;
-                        c = false;
-                        scfa = 0;
-                    }
-
-                    if (gamePadState.Buttons.Y == ButtonState.Pressed) //Play gamepad
-                    {
-                        s = false;
-                        vidplayer.Stop();
-                        // Loop Sound "07_SoundTrackSport" (Hintergrundmusik)
-
-                        soundTrackSportsLoop = soundSoundTrackSports.CreateInstance();
-                        soundTrackSportsLoop.IsLooped = true;
-                        soundTrackSportsLoop.Play();
-                    }
-
-                    //if (gamePadState.Buttons.LeftShoulder == ButtonState.Pressed)
-                    //  m_diversion.moveLeft();
-
-                    //if (gamePadState.Buttons.RightShoulder == ButtonState.Pressed)
-                    //  m_diversion.moveRight();
-
-
-                    //if STRG is pressed you look at the end of the Field
-                    if ((m_keyboardState.IsKeyDown(Keys.LeftControl) == true) || gamePadState.Buttons.RightShoulder == ButtonState.Pressed)
-                    {
-                        m_cameraLookAt = m_iceFloorPos + m_cameraLookAtOffsetField;
-                        m_cameraPosition = m_iceFloorPos + m_cameraPositionOffsetField;
-                    }
-                    //if Alt is pressed you look at the whole Field
-                    else if ((m_keyboardState.IsKeyDown(Keys.LeftAlt) == true) || gamePadState.Buttons.LeftShoulder == ButtonState.Pressed)
-                    {
-                        m_cameraLookAt = m_cameraLookAtAllField;
-                        m_cameraPosition = m_cameraPositionAllField;
-                    }
-                    else if (m_idCurrentStone >= 0 || (m_keyboardState.IsKeyDown(Keys.LeftAlt) == false && m_keyboardState.IsKeyDown(Keys.LeftControl) == false && gamePadState.Buttons.RightShoulder != ButtonState.Pressed && gamePadState.Buttons.LeftShoulder != ButtonState.Pressed))
-                    {
-                        //Camera follows current stone
-                        m_cameraLookAt = m_stones[m_stoneIdCamera].getPosition();
-                        //m_cameraPosition = m_stones[m_idCurrentStone].getPosition();
-                        m_cameraPosition = m_stones[m_stoneIdCamera].getPosition() + m_cameraPositionOffset;
-                    }
-
-                    Vector3 up;
-                    Vector3 down;
-
-                    if (((m_keyboardState.IsKeyDown(Keys.Up) || (gamePadState.DPad.Up == ButtonState.Pressed)) && !somethingMoving) && m_stones[m_stoneIdCamera].getPosition().X < 23.0)
-                    {
-                        up = new Vector3(0.5f, 0.0f, 0.0f);
-                        m_stones[m_stoneIdCamera].setPosition(m_stones[m_stoneIdCamera].getPosition() + up);
-                        m_arrowPos = m_arrowPos + up;
-                    }
-
-                    if (((m_keyboardState.IsKeyDown(Keys.Down) || (gamePadState.DPad.Down == ButtonState.Pressed)) && !somethingMoving) && m_stones[m_stoneIdCamera].getPosition().X > -23.0)
-                    {
-                        down = new Vector3(-0.5f, 0.0f, 0.0f);
-                        m_stones[m_stoneIdCamera].setPosition(m_stones[m_stoneIdCamera].getPosition() + down);
-                        m_arrowPos = m_arrowPos + down;
-                    }
-
-                    Console.WriteLine("m_stonePos.X: " + m_stones[m_stoneIdCamera].getPosition().X);
-                    /* if (gamePadState.Buttons.RightShoulder == ButtonState.Pressed)
-                     {
-                         m_cameraLookAt = m_iceFloorPos + m_cameraLookAtOffsetField;
-                         m_cameraPosition = m_iceFloorPos + m_cameraPositionOffsetField;
-                     }
-                     //if Alt is pressed you look at the whole Field
-                     else if (gamePadState.Buttons.LeftShoulder == ButtonState.Pressed)
-                     {
-                         m_cameraLookAt = m_cameraLookAtAllField;
-                         m_cameraPosition = m_cameraPositionAllField;
-                     }
-                     else if (m_idCurrentStone >= 0 || (gamePadState.Buttons.LeftShoulder == ButtonState.Pressed) == false && (gamePadState.Buttons.RightShoulder == ButtonState.Pressed == false))
-                     {
-                         //Camera follows current stone
-                         m_cameraLookAt = m_stones[m_stoneIdCamera].getPosition();
-                         //m_cameraPosition = m_stones[m_idCurrentStone].getPosition();
-                         m_cameraPosition = m_stones[m_stoneIdCamera].getPosition() + m_cameraPositionOffset;
-                     }
-                 */
-                    m_previousGameTime = new GameTime(gameTime.TotalRealTime, gameTime.ElapsedGameTime, gameTime.TotalGameTime, gameTime.ElapsedGameTime);
                 }
 
 
+                if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+                    this.Exit(); // Exit Game
 
-                /* //Jubel bzw. Boo Rufe
-                if ((Math.Sqrt(Math.Pow(m_stones[m_stoneIdCamera].getPosition().X - 0, 2) + Math.Pow(m_stones[m_stoneIdCamera].getPosition().Z + 400, 2)) < 21) && (m_stones[m_stoneIdCamera].getVx() == 0.0f) && (m_stones[m_stoneIdCamera].getVy() == 0.0f))
-                { soundBlow.Play(); }
+                if (gamePadState.Buttons.X == ButtonState.Pressed) //control gamepad
+                {
+                    c = true;
+                    s = false;
+                }
 
-                if (m_stones[m_stoneIdCamera].getPosition().Z > 420 && (m_stones[m_stoneIdCamera].getVx() == 0.0f) && (m_stones[m_stoneIdCamera].getVy() == 0.0f))
-                { soundCrowdBoo.Play(); }
-                */
+                if (gamePadState.Buttons.B == ButtonState.Pressed) //go back gamepad
+                {
+                    s = true;
+                    c = false;
+                    scfa = 0;
+                }
 
-                base.Update(gameTime);
+                if (gamePadState.Buttons.Y == ButtonState.Pressed) //Play gamepad
+                {
+                    s = false;
+                    vidplayer.Stop();
+                    // Loop Sound "07_SoundTrackSport" (Hintergrundmusik)
 
+                    soundTrackSportsLoop = soundSoundTrackSports.CreateInstance();
+                    soundTrackSportsLoop.IsLooped = true;
+                    soundTrackSportsLoop.Play();
+                }
+
+                //if (gamePadState.Buttons.LeftShoulder == ButtonState.Pressed)
+                //  m_diversion.moveLeft();
+
+                //if (gamePadState.Buttons.RightShoulder == ButtonState.Pressed)
+                //  m_diversion.moveRight();
+
+
+                //if STRG is pressed you look at the end of the Field
+                if ((m_keyboardState.IsKeyDown(Keys.LeftControl) == true) || gamePadState.Buttons.RightShoulder == ButtonState.Pressed)
+                {
+                    m_cameraLookAt = m_iceFloorPos + m_cameraLookAtOffsetField;
+                    m_cameraPosition = m_iceFloorPos + m_cameraPositionOffsetField;
+                }
+                //if Alt is pressed you look at the whole Field
+                else if ((m_keyboardState.IsKeyDown(Keys.LeftAlt) == true) || gamePadState.Buttons.LeftShoulder == ButtonState.Pressed)
+                {
+                    m_cameraLookAt = m_cameraLookAtAllField;
+                    m_cameraPosition = m_cameraPositionAllField;
+                }
+                else if (m_idCurrentStone >= 0 || (m_keyboardState.IsKeyDown(Keys.LeftAlt) == false && m_keyboardState.IsKeyDown(Keys.LeftControl) == false && gamePadState.Buttons.RightShoulder != ButtonState.Pressed && gamePadState.Buttons.LeftShoulder != ButtonState.Pressed))
+                {
+                    //Camera follows current stone
+                    m_cameraLookAt = m_stones[m_stoneIdCamera].getPosition();
+                    //m_cameraPosition = m_stones[m_idCurrentStone].getPosition();
+                    m_cameraPosition = m_stones[m_stoneIdCamera].getPosition() + m_cameraPositionOffset;
+                }
+
+                Vector3 up;
+                Vector3 down;
+
+                if (((m_keyboardState.IsKeyDown(Keys.Up) || (gamePadState.DPad.Up == ButtonState.Pressed)) && !somethingMoving) && m_stones[m_stoneIdCamera].getPosition().X < 23.0)
+                {
+                    up = new Vector3(0.5f, 0.0f, 0.0f);
+                    m_stones[m_stoneIdCamera].setPosition(m_stones[m_stoneIdCamera].getPosition() + up);
+                    m_arrowPos = m_arrowPos + up;
+                }
+
+                if (((m_keyboardState.IsKeyDown(Keys.Down) || (gamePadState.DPad.Down == ButtonState.Pressed)) && !somethingMoving) && m_stones[m_stoneIdCamera].getPosition().X > -23.0)
+                {
+                    down = new Vector3(-0.5f, 0.0f, 0.0f);
+                    m_stones[m_stoneIdCamera].setPosition(m_stones[m_stoneIdCamera].getPosition() + down);
+                    m_arrowPos = m_arrowPos + down;
+                }
+
+                Console.WriteLine("m_stonePos.X: " + m_stones[m_stoneIdCamera].getPosition().X);
+                /* if (gamePadState.Buttons.RightShoulder == ButtonState.Pressed)
+                 {
+                     m_cameraLookAt = m_iceFloorPos + m_cameraLookAtOffsetField;
+                     m_cameraPosition = m_iceFloorPos + m_cameraPositionOffsetField;
+                 }
+                 //if Alt is pressed you look at the whole Field
+                 else if (gamePadState.Buttons.LeftShoulder == ButtonState.Pressed)
+                 {
+                     m_cameraLookAt = m_cameraLookAtAllField;
+                     m_cameraPosition = m_cameraPositionAllField;
+                 }
+                 else if (m_idCurrentStone >= 0 || (gamePadState.Buttons.LeftShoulder == ButtonState.Pressed) == false && (gamePadState.Buttons.RightShoulder == ButtonState.Pressed == false))
+                 {
+                     //Camera follows current stone
+                     m_cameraLookAt = m_stones[m_stoneIdCamera].getPosition();
+                     //m_cameraPosition = m_stones[m_idCurrentStone].getPosition();
+                     m_cameraPosition = m_stones[m_stoneIdCamera].getPosition() + m_cameraPositionOffset;
+                 }
+             */
+                m_previousGameTime = new GameTime(gameTime.TotalRealTime, gameTime.ElapsedGameTime, gameTime.TotalGameTime, gameTime.ElapsedGameTime);
             }
+            base.Update(gameTime);
         }
-        
+
 
         protected override void Draw(GameTime gameTime)
         {
@@ -647,6 +601,8 @@ namespace CurlingSimulator
                 m_spriteBatch.Draw(ScoreFail, new Vector2(0, 0), Color.White);
                 m_spriteBatch.End();
             }
+
+
             base.Draw(gameTime);
         }
 
@@ -667,7 +623,7 @@ namespace CurlingSimulator
                     {
                         effect.EnableDefaultLighting();
                         effect.World = transforms[mesh.ParentBone.Index] *
-                            Matrix.CreateRotationY(m_stones[i].getRotation())
+                            Matrix.CreateRotationY(m_stoneRotation)
                             * Matrix.CreateTranslation(m_stones[i].getPosition())
                             * Matrix.CreateScale(m_stoneScale);
                         effect.View = Matrix.CreateLookAt(m_cameraPosition,
@@ -702,7 +658,7 @@ namespace CurlingSimulator
                     effect.World = transforms[mesh.ParentBone.Index] *
                         Matrix.CreateRotationY(m_iceFloorRotation)
                         * Matrix.CreateTranslation(m_iceFloorPos)
-                        * Matrix.CreateScale (m_iceFloorScale);
+                        * Matrix.CreateScale(m_iceFloorScale);
                     effect.View = Matrix.CreateLookAt(m_cameraPosition,
                         m_cameraLookAt, Vector3.Up);
                     effect.Projection = Matrix.CreatePerspectiveFieldOfView(
@@ -711,13 +667,13 @@ namespace CurlingSimulator
                 }
                 // Draw the mesh, using the effects set above.
                 mesh.Draw();
-     
+
             }
         }
 
         private void DrawHall()
         {
-            
+
             // Copy any parent transforms.
             Matrix[] transforms = new Matrix[m_hall.getModel().Bones.Count];
             m_hall.getModel().CopyAbsoluteBoneTransformsTo(transforms);
@@ -763,7 +719,7 @@ namespace CurlingSimulator
                 foreach (BasicEffect effect in mesh.Effects)
                 {
                     effect.EnableDefaultLighting();
-                    effect.DirectionalLight0.DiffuseColor = new Vector3(3.0f, 3.0f, 3.0f); 
+                    effect.DirectionalLight0.DiffuseColor = new Vector3(3.0f, 3.0f, 3.0f);
                     effect.DirectionalLight0.SpecularColor = new Vector3(0, 1, 0);
                     effect.World = transforms[mesh.ParentBone.Index] *
                         Matrix.CreateRotationY(m_arrowRotation)

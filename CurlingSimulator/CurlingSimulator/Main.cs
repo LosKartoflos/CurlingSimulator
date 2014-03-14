@@ -322,9 +322,9 @@ namespace CurlingSimulator
                             m_stones[i].setPosition(m_zeroPosition);
                         }
                         m_score = m_pointCounter;
-                        if (m_score >= 4)
+                        if (m_score >= 10)
                         { scfa = 1; }
-                        if (m_score < 4)
+                        if (m_score < 10)
                         { scfa = 2; }
                         m_pointCounter = 0;
                         m_stones[0].setPosition(m_startPosition);

@@ -486,20 +486,21 @@ namespace CurlingSimulator
                 Vector3 up;
                 Vector3 down;
 
-                /*if ((m_keyboardState.IsKeyDown(Keys.Up) || (gamePadState.DPad.Up == ButtonState.Pressed)) && !somethingMoving)
+                if (((m_keyboardState.IsKeyDown(Keys.Up) || (gamePadState.DPad.Up == ButtonState.Pressed)) && !somethingMoving) && m_stones[m_stoneIdCamera].getPosition().X < 23.0)
                 {
                     up = new Vector3(0.5f, 0.0f, 0.0f);
-                    m_stones[0].setPosition(m_stones[m_stoneIdCamera].getPosition() + up);
+                    m_stones[m_stoneIdCamera].setPosition(m_stones[m_stoneIdCamera].getPosition() + up);
                     m_arrowPos = m_arrowPos + up;
                 }
 
-                if ((m_keyboardState.IsKeyDown(Keys.Down) || (gamePadState.DPad.Down == ButtonState.Pressed)) && !somethingMoving)
+                if (((m_keyboardState.IsKeyDown(Keys.Down) || (gamePadState.DPad.Down == ButtonState.Pressed)) && !somethingMoving) && m_stones[m_stoneIdCamera].getPosition().X > -23.0)
                 {
                     down = new Vector3(-0.5f, 0.0f, 0.0f);
-                    m_stones[0].setPosition(m_stones[m_stoneIdCamera].getPosition() + down);
+                    m_stones[m_stoneIdCamera].setPosition(m_stones[m_stoneIdCamera].getPosition() + down);
                     m_arrowPos = m_arrowPos + down;
-                }*/
+                }
 
+                Console.WriteLine("m_stonePos.X: " + m_stones[m_stoneIdCamera].getPosition().X);
                /* if (gamePadState.Buttons.RightShoulder == ButtonState.Pressed)
                 {
                     m_cameraLookAt = m_iceFloorPos + m_cameraLookAtOffsetField;

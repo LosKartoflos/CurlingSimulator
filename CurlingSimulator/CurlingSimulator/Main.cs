@@ -160,8 +160,8 @@ namespace CurlingSimulator
             m_arrowRotation = 0;
             m_arrowScale = 1;
             //Hall
-            m_hallPos = new Vector3(0.0f, -0.5f, -3.0f);
-            m_hallRotation = 0;
+            m_hallPos = new Vector3(0.0f, 0.0f, -50.0f);
+            m_hallRotation = 0.0f;
             m_hallScale = 1;
             //Stone
             m_numberOfStones =8;
@@ -217,7 +217,7 @@ namespace CurlingSimulator
 
             m_arrow = new Arrow(Content.Load<Model>("Models\\Arrow"), 0, 0, 0);
 
-            m_hall = new Hall(Content.Load<Model>("Models\\Hall2"), 0, 0, 0);
+            m_hall = new Hall(Content.Load<Model>("Models\\Halle4"), 0, 0, 0);
 
 
             //sets the Aspect Ratio
@@ -498,11 +498,11 @@ namespace CurlingSimulator
         {
             GraphicsDevice.Clear(Color.White);
 
-            //DrawHall();
+            DrawHall();
             DrawFloor();
             DrawArrow();
             DrawStone();
-            DrawHall();
+            //DrawHall();
 
             m_spriteBatch.Begin(SpriteBlendMode.AlphaBlend);//start drawing 2D IMages
             m_powerBar.draw(m_spriteBatch);

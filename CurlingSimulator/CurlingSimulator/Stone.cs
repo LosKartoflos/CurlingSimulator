@@ -19,6 +19,7 @@ namespace CurlingSimulator
         Model m_model;
         float m_vX, m_vY;
         float m_diameter;
+        float m_rotation;
 
         public CStone(Model model, float x, float y, float z)
         {
@@ -31,10 +32,23 @@ namespace CurlingSimulator
             m_diameter = 3;
         }
 
+        public void setRotation(float rot)
+        {
+            m_rotation += rot;
+        }
+
+        public float getRotation()
+        {
+            return m_rotation;
+        }
+
         public void setVx(float vX)
         {
             if (Math.Abs(vX) < 0.0025)
+            {
                 vX = 0;
+                setRotation(0);
+            }
             m_vX = vX;
         }
 
@@ -46,7 +60,9 @@ namespace CurlingSimulator
         public void setVy(float vY)
         {
             if (vY > -0.025)
+            {
                 vY = 0;
+            }
             m_vY = vY;
         }
 

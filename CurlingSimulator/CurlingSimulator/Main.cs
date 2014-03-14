@@ -348,8 +348,6 @@ namespace CurlingSimulator
                
 
                 //Makes the Modelrotating
-                m_stoneRotation += (float)gameTime.ElapsedGameTime.TotalMilliseconds *
-                MathHelper.ToRadians(0.1f);
 
                 if (m_moveSlider)
                     m_powerBar.update();
@@ -370,6 +368,7 @@ namespace CurlingSimulator
                     m_stones[i].setPosition(m_stones[i].getPosition() + new Vector3(m_stones[i].getVx(), 0, m_stones[i].getVy()));
                     if (m_stones[i].getVy() < -0.025f || m_stones[i].getVx() > 0.0025f)
                     {
+                        m_stones[i].setRotation((float)gameTime.ElapsedGameTime.TotalMilliseconds * MathHelper.ToRadians(0.1f));
                         m_stones[i].applyResistance();
                     }
                 }           
@@ -596,7 +595,7 @@ namespace CurlingSimulator
                     {
                         effect.EnableDefaultLighting();
                         effect.World = transforms[mesh.ParentBone.Index] *
-                            Matrix.CreateRotationY(m_stoneRotation)
+                            Matrix.CreateRotationY(m_stones[i].getRotation())
                             * Matrix.CreateTranslation(m_stones[i].getPosition())
                             * Matrix.CreateScale(m_stoneScale);
                         effect.View = Matrix.CreateLookAt(m_cameraPosition,

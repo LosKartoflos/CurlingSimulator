@@ -153,7 +153,7 @@ namespace CurlingSimulator
             m_stoneIdCamera = 0;
             //IceFloor
             m_iceFloorRotation = 0.0f;
-            m_iceFloorPos = new Vector3(0.0f, 0.5f, -400.0f);
+            m_iceFloorPos = new Vector3(0.0f, -0.7f, -400.0f);
             m_iceFloorScale = 1;
             //Arrow
             m_arrowPos = new Vector3(0.0f, 1.0f, 0.0f);

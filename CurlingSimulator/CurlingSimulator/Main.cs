@@ -305,13 +305,19 @@ namespace CurlingSimulator
                     m_arrowPos = new Vector3(0.0f, 1.0f, 0.0f);
                     if (nextId == 0)
                     {
-                        for (int i = 1; i < m_numberOfStones; ++i)
+                        for (int i = 0; i < m_numberOfStones; i++)
                         {
                             //Count this Rounds Score
                             Vector3 currentStone = m_stones[i].getPosition();
                             // Mittels Pythagoras Abstand zwischen aktuellem Stein und Zielpunkt(0,3,-400) berechnen, Zielradius ist 21
-                            if (Math.Sqrt(Math.Pow(currentStone.X - 0, 2) + Math.Pow(currentStone.Z + 400, 2)) < 21)
+                            if ((Math.Sqrt(Math.Pow(currentStone.X, 2f) + Math.Pow(currentStone.Z + 400f, 2f)) + 1.5f <= 21f) && (Math.Sqrt(Math.Pow(currentStone.X, 2f) + Math.Pow(currentStone.Z + 400f, 2f)) + 1.5f > 15f))
                                 m_pointCounter++;
+                            else if ((Math.Sqrt(Math.Pow(currentStone.X, 2f) + Math.Pow(currentStone.Z + 400f, 2f)) + 1.5f <= 15f) && (Math.Sqrt(Math.Pow(currentStone.X, 2f) + Math.Pow(currentStone.Z + 400f, 2f)) + 1.5f > 9f))
+                                m_pointCounter += 2;
+                            else if ((Math.Sqrt(Math.Pow(currentStone.X, 2f) + Math.Pow(currentStone.Z + 400f, 2f)) + 1.5f <= 9f) && (Math.Sqrt(Math.Pow(currentStone.X, 2f) + Math.Pow(currentStone.Z + 400f, 2f)) + 1.5f > 3f))
+                                m_pointCounter += 5;
+                            else if (Math.Sqrt(Math.Pow(currentStone.X, 2f) + Math.Pow(currentStone.Z + 400f, 2f)) + 1.5f <= 3f)
+                                m_pointCounter += 10;
 
                             m_stones[i].setPosition(m_zeroPosition);
                         }
@@ -321,7 +327,7 @@ namespace CurlingSimulator
                         if (m_score < 4)
                         { scfa = 2; }
                         m_pointCounter = 0;
-                        m_pointCounter = 0;
+                        m_stones[0].setPosition(m_startPosition);
                     }
                 }
 
